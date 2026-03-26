@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Republic Datapad | Expanded Chain of Command</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --nr-blue: #0ea5e9;
+            --nr-dark: #0f172a;
+            --nr-panel: #1e293b;
+            --nr-panel-hover: #334155;
+            --nr-gold: #f59e0b;
+            --nr-text: #f8fafc;
+            --nr-muted: #94a3b8;
+            --nr-border: #334155;
+            --nr-red: #ef4444;
+            --badge-silver: linear-gradient(to bottom, #e4e4e7, #a1a1aa);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--nr-dark);
+            color: var(--nr-text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 50% 0%, #1e3a8a 0%, transparent 50%),
+                linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)),
+                url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M10 10h10v10H10z" fill="rgba(255,255,255,0.02)"/></svg>');
+            background-attachment: fixed;
+        }
+
+        /* ── Header ────────────────────────────────────────── */
+        header {
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--nr-blue);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-container {
+            width: 48px;
+            height: 48px;
+            fill: var(--nr-gold);
+            filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
+        }
+
+        .title-group h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--nr-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .title-group p {
+            color: var(--nr-gold);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sys-info {
+            text-align: right;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--nr-blue);
+        }
+
+        /* ── Main Content & Controls ───────────────────────── */
+        main {
+            flex: 1;
+            padding: 2rem;
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            background: var(--nr-panel);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--nr-border);
+        }
+
+        .search-wrapper {
+            position: relative;
+            width: 350px;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--nr-muted);
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: var(--nr-dark);
+            border: 1px solid var(--nr-border);
+            color: white;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-wrapper input:focus {
+            border-color: var(--nr-blue);
+        }
+
+        /* ── Advanced Matrix Table ─────────────────────────── */
+        .table-container {
+            background: var(--nr-panel);
+            border-radius: 8px;
+            border: 1px solid var(--nr-border);
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+            min-width: 1400px;
+        }
+
+        th {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--nr-blue);
+            font-family: 'Orbitron', sans-serif;
+            padding: 1rem;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--nr-border);
+            border-right: 1px solid var(--nr-border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-align: center;
+        }
+
+        th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 20;
+            background: var(--nr-panel);
+            border-right: 2px solid var(--nr-border);
+        }
+
+        td {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--nr-border);
+            border-right: 1px solid var(--nr-border);
+            vertical-align: top;
+        }
+
+        td:first-child {
+            position: sticky;
+            left: 0;
+            background: var(--nr-panel);
+            border-right: 2px solid var(--nr-border);
+            z-index: 10;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .tier-header td {
+            background: rgba(245, 158, 11, 0.15) !important;
+            color: var(--nr-gold);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 0.5rem;
+            border-bottom: 2px solid var(--nr-gold);
+        }
+
+        .rank-code {
+            font-family: 'Orbitron', monospace;
+            color: var(--nr-muted);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* ── Individual Rank Cells ─────────────────────────── */
+        .cell-card {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 0.75rem 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            min-height: 110px;
+            gap: 0.5rem;
+        }
+
+        .cell-card:hover {
+            background: rgba(14, 165, 233, 0.1);
+            border-color: var(--nr-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+        }
+
+        .cell-card.dimmed {
+            opacity: 0.15;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+
+        .cell-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--nr-text);
+            line-height: 1.2;
+        }
+
+        .cell-plaque-wrapper {
+            transform: scale(0.65);
+            transform-origin: center;
+            margin: -8px 0;
+        }
+
+        .empty-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--nr-border);
+            font-size: 1.5rem;
+        }
+
+        /* ── Rank Badge (Pip system) ───────────────────────── */
+        .badge-container {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 4px;
+            background: var(--badge-silver);
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #71717a;
+            box-shadow: 
+                inset 0 1px 3px rgba(255,255,255,0.8),
+                inset 0 -1px 3px rgba(0,0,0,0.2),
+                0 4px 6px rgba(0,0,0,0.5);
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .pip {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.6);
+            box-shadow: 
+                inset -2px -2px 4px rgba(0,0,0,0.4), 
+                inset 2px 2px 4px rgba(255,255,255,0.6),
+                0 2px 3px rgba(0,0,0,0.5);
+        }
+
+        .pip.red { background-color: #ef4444; }
+        .pip.blue { background-color: #3b82f6; }
+        .pip.gold { background-color: #eab308; }
+        .pip.empty { background-color: transparent; border: none; box-shadow: none; } /* For structural spacing if needed */
+
+        /* ── Modal ─────────────────────────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--nr-panel);
+            border: 1px solid var(--nr-border);
+            border-top: 4px solid var(--nr-blue);
+            width: 90%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--nr-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .modal-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--nr-blue);
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .modal-header .sub-title {
+            color: var(--nr-gold);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--nr-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover { color: white; }
+
+        .modal-body {
+            padding: 2rem 1.5rem;
+            color: var(--nr-text);
+            line-height: 1.6;
+        }
+
+        .modal-badge-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 6px;
+            border: 1px solid var(--nr-border);
+        }
+
+        .lore-section {
+            border-left: 3px solid var(--nr-blue);
+            padding-left: 1rem;
+        }
+        
+        .lore-section p {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; text-align: center; gap: 1rem; }
+            .sys-info { text-align: center; }
+            .controls { flex-direction: column; gap: 1rem; }
+            .search-wrapper { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <div class="logo-container">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 5 L60 35 L90 45 L65 65 L70 95 L50 80 L30 95 L35 65 L10 45 L40 35 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M50 35 L50 65 M35 50 L65 50" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </div>
+            <div class="title-group">
+                <h1>New Republic Datapad</h1>
+                <p>Expanded Cross-Branch Personnel Hierarchy</p>
+            </div>
+        </div>
+        <div class="sys-info">
+            <span id="stardate-display">SD: 0000.0</span>
+            <span id="clock-display">00:00:00</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="controls">
+            <div class="search-wrapper">
+                <i data-lucide="search"></i>
+                <input type="text" id="searchInput" placeholder="Search specific rank or branch...">
+            </div>
+            <div style="color: var(--nr-muted); font-size: 0.9rem;">
+                Active Records: <span id="record-count" style="color: var(--nr-blue); font-weight: bold;">0</span>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="rankTable">
+                <thead>
+                    <tr>
+                        <th style="min-width: 100px;">Code</th>
+                        <th style="width: 14%;">Defense Fleet</th>
+                        <th style="width: 14%;">Naval Intel</th>
+                        <th style="width: 14%;">Republic Army</th>
+                        <th style="width: 14%;">Army Intel</th>
+                        <th style="width: 14%;">Starfighter Corps</th>
+                        <th style="width: 14%;">NRI</th>
+                        <th style="width: 14%;">Governance</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Rows generated dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Detailed Modal -->
+    <div class="modal-overlay" id="rankModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalRankName">Rank Name</h2>
+                    <div class="sub-title" id="modalBranchCode">BRANCH | CODE</div>
+                </div>
+                <button class="close-btn" id="closeModalBtn">
+                    <i data-lucide="x" width="24" height="24"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-badge-preview" id="modalBadge">
+                    <!-- Badge Injected Here -->
+                </div>
+                <div class="lore-section">
+                    <p id="modalLoreText">Lore text goes here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // ── Database Array ───────────────────────────────────────────────
+        // Format: "Designation | BranchKey | Rank Title | Pips (Row1,Row2) | Lore Description"
+        // Pip keys: b = blue, r = red, g = gold, none = no badge. Comma splits rows.
+        
+        const rawDatabase = [
+            // FO-6
+            "FO-6|NAV|Supreme Commander|bbbbb,bbbbb|Highest-ranking naval officer, answering only to the Chief of State and the Senate Defense Committee. Oversees all grand strategy for the Defense Fleet across the galaxy.",
+            "FO-6|ARM|Supreme Commander|rrrrr,ggggg|Highest-ranking ground forces commander. Coordinates global liberation campaigns, planetary defense grids, and the entire Republic Army.",
+            "FO-6|SFC|Marshal of the Corps|bbbbb,ggggg|Commander of the Starfighter Corps. Ensures that all fighter wings, interceptor squadrons, and bomber fleets operate in unified synergy.",
+            "FO-6|NRI|Minister of Intelligence|rrbrr,rrbrr|Cabinet-level civilian or military official who oversees the entire New Republic Intelligence apparatus and advises the Chief of State on existential threats.",
+            "FO-6|GOV|Chief of State|ggggg,ggggg|The democratically elected leader of the New Republic, head of the Galactic Senate, and ultimate commander-in-chief of all defense forces.",
+            
+            // FO-5
+            "FO-5|NAV|Fleet Admiral|bbbbb,rrrr|Commands an entire Armada or theater of operations. Fleet Admirals are rare and are usually assigned to massive sectors like the Core Worlds.",
+            "FO-5|NIN|Director of Naval Intel|rrrrr,bbbb|The supreme head of Naval Intelligence, responsible for tracking Imperial remnant fleet movements and assessing deep-space threats.",
+            "FO-5|ARM|High General|rrrrr,gggg|Commands an entire theater of war or a multi-system planetary defense network. Directly advises the Supreme Commander.",
+            "FO-5|AIN|Director of Army Intel|ggggg,rrrr|Head of the Army's intelligence division, specializing in ground-level insurgencies, planetary topography mapping, and counter-espionage.",
+            "FO-5|SFC|General of the Corps|bbbbb,gggg|Commands starfighter operations across an entire galactic sector, ensuring adequate fighter coverage for both fleet and army deployments.",
+            "FO-5|NRI|Director of NRI|rrbrr,rrrr|The operational head of New Republic Intelligence. Manages spy networks, covert operations, and elite black-ops units across the galaxy.",
+            "FO-5|GOV|Chancellor|ggggg,gggg|The Vice Chair or secondary leader of the Senate. Often presides over Senate sessions and manages internal political disputes.",
+
+            // FO-4
+            "FO-4|NAV|Admiral|bbbbb,rrr|Commands a numbered fleet. Admirals are responsible for the defense of entire sectors and coordinate multiple battle groups.",
+            "FO-4|NIN|Deputy Director|rrrrr,bbb|Second-in-command of Naval Intelligence. Often manages the day-to-day operations and administrative burdens of the agency.",
+            "FO-4|ARM|General|rrrrr,ggg|Commands an Army consisting of millions of troops across several planets. High-level strategic planner for planetary invasions.",
+            "FO-4|AIN|Deputy Director|ggggg,rrr|Manages the distribution of actionable ground intelligence to active warzones and oversees regional Army Intel centers.",
+            "FO-4|SFC|General|bbbbb,ggg|Commands multiple starfighter groups across a sector. Often embedded within a numbered fleet to coordinate fighter screens.",
+            "FO-4|NRI|Deputy Director|rrbrr,rrr|Manages the internal administration of the NRI and oversees the flow of intelligence between field agents and High Command.",
+            "FO-4|GOV|Senior Senator|ggggg,ggg|A highly influential representative in the Galactic Senate, often holding seats on powerful committees such as Defense or Finance.",
+
+            // FO-3
+            "FO-3|NAV|Vice Admiral|bbbbb,rr|Commands specialized task forces or acts as second-in-command to a numbered fleet. Often leads critical deep-space missions.",
+            "FO-3|NIN|Sector Chief|rrrrr,bb|Directs all naval intelligence operations within a designated galactic sector, coordinating with local defense forces.",
+            "FO-3|ARM|Lieutenant General|rrrrr,gg|Commands a Corps. Responsible for executing planetary-scale maneuvers and coordinating massive troop deployments.",
+            "FO-3|AIN|Division Head|ggggg,rr|Oversees a major analytical or operational division within Army Intelligence, such as signals interception or interrogation.",
+            "FO-3|SFC|Lieutenant General|bbbbb,gg|Oversees the integration of starfighter wings into carrier groups and ensures optimal pilot rotation and training.",
+            "FO-3|NRI|Bureau Chief|rrbrr,rr|Heads a major NRI Bureau (e.g., Counter-Intelligence, Internal Security, or Special Operations).",
+            "FO-3|GOV|Senator|ggggg,gg|The elected representative of a star system or sector. Debates policy, authors legislation, and votes on New Republic laws.",
+
+            // FO-2
+            "FO-2|NAV|Rear Admiral|bbbb,rr|Commands a small battle group or a major naval station. Often acts as a junior flag officer handling regional security.",
+            "FO-2|NIN|Operations Chief|rrrr,bb|Manages active naval espionage operations, handling fleet infiltration and covert deep-space recon.",
+            "FO-2|ARM|Major General|rrrr,gg|Commands a Division. Expected to lead complex, multi-faceted ground campaigns and manage heavy armor and artillery units.",
+            "FO-2|AIN|Brigade Chief|gggg,rr|Oversees tactical intelligence gathering for a specific ground campaign, managing forward recon elements.",
+            "FO-2|SFC|Major General|bbbb,gg|Commands a starfighter group, ensuring strategic objectives are met during massive void-battles.",
+            "FO-2|NRI|Sector Chief|rbbr,rr|Coordinates all NRI covert operations and field agents within a specific galactic sector.",
+            "FO-2|GOV|Minister|gggg,gg|Head of a specific governmental ministry (e.g., Ministry of Trade, Ministry of Supply).",
+
+            // FO-1
+            "FO-1|NAV|Commodore|bbb,rr|Commands a tactical line of ships or a small squadron. A transitional rank for senior captains proving their strategic acumen.",
+            "FO-1|NIN|Station Chief|rrr,bb|Commands a deep-space listening post or a covert naval intelligence gathering station.",
+            "FO-1|ARM|Brigadier General|rrr,gg|Commands a Brigade. Leads thousands of troops and acts as the bridge between field commanders and theater generals.",
+            "FO-1|AIN|Regimental Chief|ggg,rr|Heads an intelligence regiment, focusing on large-scale counter-insurgency or partisan support.",
+            "FO-1|SFC|Brigadier|bbb,gg|Commands a specialized wing or handles elite training programs at starfighter academies.",
+            "FO-1|NRI|Station Chief|rbr,rr|Manages a covert planetary listening post or safehouse network.",
+            "FO-1|GOV|Deputy Minister|ggg,gg|Assists a Minister in executing departmental policies and acts as acting head when necessary.",
+
+            // SO-3
+            "SO-3|NAV|Captain|bbbb,rrrr|Master of a capital ship like an MC80 Cruiser. The backbone of the Defense Fleet, possessing ultimate authority on their vessel.",
+            "SO-3|NIN|Captain (Intel)|rrrr,bbbb|Oversees high-level intelligence processing on capital ships or major outposts.",
+            "SO-3|ARM|Colonel|rrrr,gggg|Commands a Regiment. A seasoned veteran who directly executes the tactical visions of the generals.",
+            "SO-3|AIN|Colonel (Intel)|gggg,rrrr|Oversees the intelligence apparatus for a planetary army, directing field recon and drone surveillance.",
+            "SO-3|SFC|Wing Commander|bbbb,gggg|Leads a full wing of starfighters. Often flies in combat alongside their pilots during crucial strikes.",
+            "SO-3|NRI|Supervisory Agent|rbbr,rbbr|A veteran agent who oversees high-stakes field operations and manages multiple operative teams.",
+            "SO-3|GOV|Governor|gggg,gggg|The civilian administrator of a planet or system, ensuring local laws align with the New Republic constitution.",
+
+            // SO-2
+            "SO-2|NAV|Commander|bbb,rrr|Often serves as the Executive Officer (XO) on a capital ship or commands smaller vessels like corvettes and frigates.",
+            "SO-2|NIN|Commander (Intel)|rrrr,bbb|Acts as the chief intelligence officer on a capital ship or manages a mid-sized data-gathering cell.",
+            "SO-2|ARM|Lieutenant Colonel|rrrr,ggg|Commands a Battalion. Acts as a key battlefield leader, often found near the front lines managing troop movements.",
+            "SO-2|AIN|Lieutenant Colonel|gggg,rrr|Coordinates intelligence gathering for active frontline battalions, analyzing enemy movements in real-time.",
+            "SO-2|SFC|Group Captain|bbbb,ggg|Commands a starfighter group within a wing, coordinating strikes between different squadrons.",
+            "SO-2|NRI|Senior Field Agent|rbbr,rrr|A highly experienced covert operative capable of operating independently deep behind enemy lines.",
+            "SO-2|GOV|Administrator|gggg,ggg|Manages a continent, major metropolis, or significant orbital facility.",
+
+            // SO-1
+            "SO-1|NAV|Lieutenant Commander|bbb,rr|Heads a major department on a starship (Gunnery, Engineering, Operations) or acts as XO on smaller ships.",
+            "SO-1|NIN|Lieutenant Commander|rrrr,bb|Senior analyst who processes intercepted transmissions and decrypts hostile communications.",
+            "SO-1|ARM|Major|rrrr,gg|An executive officer to a battalion commander, or commands a specialized company-sized unit.",
+            "SO-1|AIN|Major (Intel)|gggg,rr|Field analyst assessing immediate tactical threats and coordinating local scout patrols.",
+            "SO-1|SFC|Squadron Commander|bbbb,gg|Leads a starfighter squadron (typically 12 ships). An elite pilot and tactical leader.",
+            "SO-1|NRI|Field Agent|rbbr,rr|A standard, fully qualified operative of the NRI, executing infiltration, sabotage, or extraction missions.",
+            "SO-1|GOV|Mayor|gggg,gg|Civilian leader of a city or major settlement.",
+
+            // JO-4
+            "JO-4|NAV|Captain (Junior Grade)|bbb,rrr|A junior captain variant used for commanding support vessels, transports, or minor patrol craft.",
+            "JO-4|NIN|Senior Case Officer|rrr,bbb|Manages intelligence assets and informants on a specific planet or within a hostile organization.",
+            "JO-4|ARM|Captain|rrr,ggg|Commands a Company of infantry. Responsible for the lives of over a hundred soldiers in direct combat.",
+            "JO-4|AIN|Captain (Intel)|ggg,rrr|Commands a company-sized recon element, specializing in stealth operations and target acquisition.",
+            "JO-4|SFC|Squadron Leader|bbb,ggg|Second-in-command of a starfighter squadron, or leading a highly specialized tactical flight.",
+            "JO-4|NRI|Senior Operative|rbr,rbr|An experienced operative leading small teams on specialized infiltration missions.",
+            "JO-4|GOV|Senior Aide|ggg,ggg|A trusted advisor and chief of staff to a Senator or Governor, managing their political agenda.",
+
+            // JO-3
+            "JO-3|NAV|Lieutenant (Senior Grade)|bbb,rr|A watch officer or department division head on a starship. Seasoned and capable of taking command if necessary.",
+            "JO-3|NIN|Case Officer|rrr,bb|Handles the recruitment and management of local informants and double agents.",
+            "JO-3|ARM|First Lieutenant|rrr,gg|Commands a Platoon. An experienced junior officer who leads troops through brutal firefights.",
+            "JO-3|AIN|First Lieutenant|ggg,rr|Leads a recon platoon, venturing ahead of the main army to scout enemy positions.",
+            "JO-3|SFC|Flight Captain|bbb,gg|A seasoned ace pilot who leads a flight (usually 4 starfighters) into combat.",
+            "JO-3|NRI|Operative|rbr,rr|A trained field agent executing the tactical goals of the NRI, often operating under cover.",
+            "JO-3|GOV|Diplomat|ggg,gg|An official representative of the New Republic dispatched to negotiate treaties, trade deals, and ceasefires.",
+
+            // JO-2
+            "JO-2|NAV|Lieutenant (Junior Grade)|bbb,r|Often a recent academy graduate's first promotion. Handles day-to-day administrative and technical tasks.",
+            "JO-2|NIN|Intelligence Officer|rrr,b|An entry-level officer analyzing fleet telemetry and monitoring localized comm channels.",
+            "JO-2|ARM|Second Lieutenant|rrr,g|An entry-level platoon commander. Relies heavily on the experience of their NCOs to survive and succeed.",
+            "JO-2|AIN|Second Lieutenant|ggg,r|Junior intel officer attached to forward units, ensuring encrypted comms remain secure.",
+            "JO-2|SFC|Flight Lieutenant|bbb,g|A skilled pilot who acts as a flight leader or second-in-command of a flight element.",
+            "JO-2|NRI|Junior Operative|rbr,r|A recently trained agent handling low-risk surveillance and reconnaissance.",
+            "JO-2|GOV|Attaché|ggg,g|A junior political officer attached to a diplomatic mission or senatorial office.",
+
+            // JO-1
+            "JO-1|NAV|Ensign|bb,r|The lowest commissioned naval rank. Sent to starships to gain practical leadership experience under senior officers.",
+            "JO-1|NIN|Junior Analyst|rr,b|Entry-level data cruncher, sifting through millions of terabytes of surveillance data.",
+            "JO-1|ARM|Officer Cadet|rr,g|An academy student completing their final field exercises before receiving a full commission.",
+            "JO-1|AIN|Field Analyst|gg,r|Junior analyst deployed to the field, maintaining intel databases for the army.",
+            "JO-1|SFC|Flying Officer|bb,g|A fully qualified starfighter pilot fresh out of the academy, assigned to their first squadron.",
+            "JO-1|NRI|Analyst|rr,r|An office-based intelligence worker decoding transmissions and cross-referencing public data feeds.",
+            "JO-1|GOV|Clerk|gg,g|An administrative worker handling the immense bureaucracy of the New Republic government.",
+
+            // WO-1
+            "WO-1|NAV|Chief Warrant Officer|bb,rr|Highly specialized technical expert on a starship.",
+            "WO-1|NIN|Intelligence Warrant|rr,bb|Technical master of encryption and slicing.",
+            "WO-1|ARM|Warrant Officer|rr,gg|Weapons and logistics specialist for ground forces.",
+            "WO-1|AIN|Recon Warrant|gg,rr|Specialized drone and sensor operator.",
+            "WO-1|SFC|Master Technician|bb,gg|Elite mechanic overseeing starfighter repair bays.",
+            "WO-1|NRI|Technical Specialist|rr,r|Master slicer and gadget engineer for the NRI.",
+            "WO-1|GOV|Chief Auditor|gg,g|Specialized civilian investigator for government fraud.",
+
+            // NCO-3
+            "NCO-3|NAV|Master Chief|r,r|Senior enlisted advisor to ship captains.",
+            "NCO-3|NIN|Master Analyst|b,b|Senior enlisted data supervisor.",
+            "NCO-3|ARM|Sergeant Major|g,g|Senior disciplinary and tactical advisor to battalions.",
+            "NCO-3|AIN|Master Scout|r,g|Veteran forward observer.",
+            "NCO-3|SFC|Flight Sergeant|b,g|Senior deck chief on flight operations.",
+            "NCO-3|NRI|Chief Operative|r,b|Veteran enforcer and extraction specialist.",
+            "NCO-3|GOV|Senior Inspector|g,r|High-level bureaucratic compliance officer.",
+
+            // E-1
+            "E-1|NAV|Spaceman|none|Basic enlisted spacer swabbing decks and manning minor consoles.",
+            "E-1|NIN|Data Clerk|none|Low-level transcription and data-entry clerk.",
+            "E-1|ARM|Trooper|none|The backbone of the Republic Army. Basic infantry.",
+            "E-1|AIN|Scout|none|Basic forward observer and wire-tapper.",
+            "E-1|SFC|Crewman|none|Basic deckhand assisting with fighter refueling.",
+            "E-1|NRI|Field Asset|none|Low-level informant or basic muscle.",
+            "E-1|GOV|Civil Servant|none|Basic government administrative worker."
+        ];
+
+        // ── Data Parsing & Management ────────────────────────────────────
+        
+        const tiers = ["FO-6", "FO-5", "FO-4", "FO-3", "FO-2", "FO-1", "SO-3", "SO-2", "SO-1", "JO-4", "JO-3", "JO-2", "JO-1", "WO-1", "NCO-3", "E-1"];
+        const branches = ["NAV", "NIN", "ARM", "AIN", "SFC", "NRI", "GOV"];
+        const branchNames = {
+            "NAV": "Defense Fleet",
+            "NIN": "Naval Intelligence",
+            "ARM": "Republic Army",
+            "AIN": "Army Intelligence",
+            "SFC": "Starfighter Corps",
+            "NRI": "New Republic Intelligence",
+            "GOV": "Governance / Senate"
+        };
+
+        const rankMap = {};
+        let totalRecords = 0;
+
+        // Initialize empty map
+        tiers.forEach(t => {
+            rankMap[t] = {};
+            branches.forEach(b => rankMap[t][b] = null);
+        });
+
+        // Parse raw string database
+        rawDatabase.forEach(entry => {
+            const [designation, branch, title, pipsStr, lore] = entry.split('|');
+            if (rankMap[designation]) {
+                rankMap[designation][branch] = { title, pipsStr, lore, designation, branch };
+                totalRecords++;
+            }
+        });
+
+        // ── HTML Generation ──────────────────────────────────────────────
+
+        function buildPipsHTML(pipsStr) {
+            if (pipsStr === 'none') {
+                return `<div class="badge-container"><div style="font-size:9px; color:#52525b; font-weight:bold; letter-spacing:1px; padding:2px;">NO INSIGNIA</div></div>`;
+            }
+
+            const rows = pipsStr.split(',');
+            let html = '<div class="badge-container">';
+            
+            rows.forEach(row => {
+                html += '<div class="badge-row">';
+                for(let i=0; i<row.length; i++) {
+                    const char = row[i];
+                    let colorClass = char === 'b' ? 'blue' : (char === 'r' ? 'red' : (char === 'g' ? 'gold' : 'empty'));
+                    html += `<div class="pip ${colorClass}"></div>`;
+                }
+                html += '</div>';
+            });
+            html += '</div>';
+            return html;
+        }
+
+        const tbody = document.getElementById('tableBody');
+
+        function renderTable() {
+            tbody.innerHTML = '';
+            
+            // Render tier groupings
+            const tierGroups = [
+                { title: "Flag Officers / High Command", list: ["FO-6", "FO-5", "FO-4", "FO-3", "FO-2", "FO-1"] },
+                { title: "Senior Officers", list: ["SO-3", "SO-2", "SO-1"] },
+                { title: "Junior Officers", list: ["JO-4", "JO-3", "JO-2", "JO-1"] },
+                { title: "Warrant Officers & Enlisted", list: ["WO-1", "NCO-3", "E-1"] }
+            ];
+
+            tierGroups.forEach(group => {
+                // Tier Header
+                const thRow = document.createElement('tr');
+                thRow.className = 'tier-header';
+                thRow.innerHTML = `<td colspan="8">${group.title}</td>`;
+                tbody.appendChild(thRow);
+
+                // Render each tier in group
+                group.list.forEach(tier => {
+                    const tr = document.createElement('tr');
+                    
+                    // Designation cell
+                    const desigTd = document.createElement('td');
+                    desigTd.className = 'rank-code';
+                    desigTd.textContent = tier;
+                    tr.appendChild(desigTd);
+
+                    // Branch cells
+                    branches.forEach(branch => {
+                        const td = document.createElement('td');
+                        const data = rankMap[tier][branch];
+                        
+                        if (data) {
+                            const card = document.createElement('div');
+                            card.className = 'cell-card';
+                            card.dataset.title = data.title.toLowerCase();
+                            card.dataset.branch = branchNames[branch].toLowerCase();
+                            
+                            card.innerHTML = `
+                                <div class="cell-plaque-wrapper">${buildPipsHTML(data.pipsStr)}</div>
+                                <div class="cell-title">${data.title}</div>
+                            `;
+                            
+                            card.addEventListener('click', () => openModal(data));
+                            td.appendChild(card);
+                        } else {
+                            td.innerHTML = `<div class="empty-cell">-</div>`;
+                        }
+                        tr.appendChild(td);
+                    });
+                    
+                    tbody.appendChild(tr);
+                });
+            });
+
+            document.getElementById('record-count').textContent = totalRecords;
+        }
+
+        // ── Search & Filter ──────────────────────────────────────────────
+        const searchInput = document.getElementById('searchInput');
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.cell-card');
+            
+            cards.forEach(card => {
+                const title = card.dataset.title;
+                const branch = card.dataset.branch;
+                if (title.includes(term) || branch.includes(term)) {
+                    card.classList.remove('dimmed');
+                } else {
+                    card.classList.add('dimmed');
+                }
+            });
+        });
+
+        // ── Modal Logic ──────────────────────────────────────────────────
+        const modal = document.getElementById('rankModal');
+        const closeBtn = document.getElementById('closeModalBtn');
+
+        function openModal(data) {
+            document.getElementById('modalRankName').textContent = data.title;
+            document.getElementById('modalBranchCode').textContent = `${branchNames[data.branch]} | ${data.designation}`;
+            document.getElementById('modalBadge').innerHTML = buildPipsHTML(data.pipsStr);
+            document.getElementById('modalLoreText').textContent = data.lore;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // ── Stardate / Clock Logic ───────────────────────────────────────
+        function updateClock() {
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('clock-display').textContent = `${hh}:${mm}:${ss} Coruscant Standard`;
+
+            const baseDate = new Date('1983-05-25').getTime(); // ROTJ release ~ 4 ABY
+            const diffDays = (now.getTime() - baseDate) / (1000 * 3600 * 24);
+            const stardate = (4.0 + (diffDays / 365.25)).toFixed(2);
+            
+            document.getElementById('stardate-display').textContent = `SD: ${stardate} ABY`;
+        }
+        
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ── Init ─────────────────────────────────────────────────────────
+        renderTable();
+
+    </script>
+</body>
+</html>
