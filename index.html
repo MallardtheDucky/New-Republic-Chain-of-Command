@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Republic Datapad | Expanded Chain of Command</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>New Republic Datapad | Personnel Records</title>
+
+    <meta name="description" content="New Republic Chain of Command — Personnel Hierarchy Database. Full rank structures for the New Republic Defense Forces, Intelligence, and Governance. Year: 17 ABY.">
 
     <style>
         :root {
-            --nr-blue: #0ea5e9;
-            --nr-dark: #0f172a;
-            --nr-panel: #1e293b;
-            --nr-panel-hover: #334155;
-            --nr-gold: #f59e0b;
-            --nr-text: #f8fafc;
-            --nr-muted: #94a3b8;
-            --nr-border: #334155;
-            --nr-red: #ef4444;
-            --badge-silver: linear-gradient(to bottom, #e4e4e7, #a1a1aa);
+            /* New Republic Aesthetic: Deep Blues, Golds, Silvers */
+            --bg-color: #080f18;
+            --surface-color: #112031;
+            --surface-hover: #1b3049;
+            --border-color: #2a4365;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --accent-gold: #f59e0b;
+            --accent-blue: #3b82f6;
+            --danger-red: #ef4444;
+            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-mono: 'Courier New', Courier, monospace;
         }
 
         * {
@@ -29,762 +30,863 @@
         }
 
         body {
-            background-color: var(--nr-dark);
-            color: var(--nr-text);
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-image: 
-                radial-gradient(circle at 50% 0%, #1e3a8a 0%, transparent 50%),
-                linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)),
-                url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M10 10h10v10H10z" fill="rgba(255,255,255,0.02)"/></svg>');
-            background-attachment: fixed;
+            overflow-x: hidden;
         }
 
-        /* ── Header ────────────────────────────────────────── */
+        /* ── Header ──────────────────────────────────────────────────────── */
         header {
-            background: rgba(30, 41, 59, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 2px solid var(--nr-blue);
+            background: linear-gradient(180deg, rgba(17,32,49,1) 0%, rgba(8,15,24,1) 100%);
+            border-bottom: 2px solid var(--accent-gold);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
             position: sticky;
             top: 0;
-            z-index: 40;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            z-index: 100;
         }
 
-        .brand {
+        .logo-container {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
-        .logo-container {
-            width: 48px;
-            height: 48px;
-            fill: var(--nr-gold);
-            filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
+        .logo-container svg {
+            width: 50px;
+            height: 50px;
+            fill: var(--accent-gold);
+            filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.4));
         }
 
-        .title-group h1 {
-            font-family: 'Orbitron', sans-serif;
+        .header-titles h1 {
             font-size: 1.5rem;
-            color: var(--nr-blue);
-            text-transform: uppercase;
             letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 0.2rem;
         }
 
-        .title-group p {
-            color: var(--nr-gold);
+        .header-titles p {
             font-size: 0.85rem;
-            text-transform: uppercase;
+            color: var(--accent-blue);
+            font-family: var(--font-mono);
             letter-spacing: 1px;
         }
 
-        .sys-info {
+        .status-panel {
             text-align: right;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            color: var(--nr-blue);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
         }
 
-        /* ── Main Content & Controls ───────────────────────── */
+        .status-panel span {
+            display: block;
+        }
+
+        .highlight {
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        /* ── Main Content & Table ────────────────────────────────────────── */
         main {
             flex: 1;
             padding: 2rem;
             width: 100%;
-            max-width: 1800px;
-            margin: 0 auto;
+            max-width: 100vw;
         }
 
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            background: var(--nr-panel);
-            padding: 1rem;
+        .table-wrapper {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            border: 1px solid var(--nr-border);
+            overflow-x: auto; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            max-height: 80vh;
         }
-
-        .search-wrapper {
-            position: relative;
-            width: 350px;
+        
+        .table-wrapper::-webkit-scrollbar {
+            height: 12px;
+            width: 12px;
         }
-
-        .search-wrapper i {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--nr-muted);
+        .table-wrapper::-webkit-scrollbar-track {
+            background: var(--bg-color);
         }
-
-        .search-wrapper input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            background: var(--nr-dark);
-            border: 1px solid var(--nr-border);
-            color: white;
-            border-radius: 4px;
-            outline: none;
-            transition: border-color 0.2s;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .search-wrapper input:focus {
-            border-color: var(--nr-blue);
-        }
-
-        /* ── Advanced Matrix Table ─────────────────────────── */
-        .table-container {
-            background: var(--nr-panel);
-            border-radius: 8px;
-            border: 1px solid var(--nr-border);
-            overflow-x: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 6px;
+            border: 2px solid var(--bg-color);
         }
 
         table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
+            border-collapse: collapse;
             text-align: left;
-            min-width: 1400px;
+            min-width: 1400px; /* Force scroll for large dataset */
         }
 
-        th {
-            background: rgba(14, 165, 233, 0.1);
-            color: var(--nr-blue);
-            font-family: 'Orbitron', sans-serif;
-            padding: 1rem;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-bottom: 2px solid var(--nr-border);
-            border-right: 1px solid var(--nr-border);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            text-align: center;
-        }
-
-        th:first-child {
-            position: sticky;
-            left: 0;
-            z-index: 20;
-            background: var(--nr-panel);
-            border-right: 2px solid var(--nr-border);
-        }
-
-        td {
-            padding: 0.5rem;
-            border-bottom: 1px solid var(--nr-border);
-            border-right: 1px solid var(--nr-border);
+        th, td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            border-right: 1px solid rgba(42, 67, 101, 0.4);
             vertical-align: top;
         }
 
-        td:first-child {
-            position: sticky;
-            left: 0;
-            background: var(--nr-panel);
-            border-right: 2px solid var(--nr-border);
-            z-index: 10;
-            vertical-align: middle;
-            text-align: center;
+        th:last-child, td:last-child {
+            border-right: none;
         }
 
-        .tier-header td {
-            background: rgba(245, 158, 11, 0.15) !important;
-            color: var(--nr-gold);
-            font-family: 'Orbitron', sans-serif;
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        thead tr:first-child th {
+            background-color: #0d1824;
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        th {
+            color: var(--accent-blue);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .category-row {
+            background-color: rgba(59, 130, 246, 0.15);
+            color: var(--accent-gold);
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-align: center;
-            padding: 0.5rem;
-            border-bottom: 2px solid var(--nr-gold);
+            font-size: 0.95rem;
+            position: sticky;
+            left: 0;
         }
 
-        .rank-code {
-            font-family: 'Orbitron', monospace;
-            color: var(--nr-muted);
+        .rank-level {
+            font-family: var(--font-mono);
+            color: var(--accent-gold);
             font-weight: bold;
-            font-size: 1.1rem;
+            width: 70px;
+            background: var(--surface-color);
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            border-right: 2px solid var(--border-color);
         }
 
-        /* ── Individual Rank Cells ─────────────────────────── */
-        .cell-card {
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid transparent;
-            border-radius: 6px;
-            padding: 0.75rem 0.5rem;
+        /* Rank Cells */
+        .rank-cell {
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
+            min-width: 180px;
+        }
+
+        .rank-cell:hover {
+            background-color: var(--surface-hover);
+        }
+
+        .rank-cell-content {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            height: 100%;
-            min-height: 110px;
-            gap: 0.5rem;
+            gap: 8px;
         }
 
-        .cell-card:hover {
-            background: rgba(14, 165, 233, 0.1);
-            border-color: var(--nr-blue);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
-        }
-
-        .cell-card.dimmed {
-            opacity: 0.15;
-            pointer-events: none;
-            filter: grayscale(100%);
-        }
-
-        .cell-title {
-            font-size: 0.8rem;
+        .rank-title {
             font-weight: 600;
-            color: var(--nr-text);
-            line-height: 1.2;
+            font-size: 0.9rem;
+            color: #e2e8f0;
         }
 
-        .cell-plaque-wrapper {
-            transform: scale(0.65);
-            transform-origin: center;
-            margin: -8px 0;
-        }
-
-        .empty-cell {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: var(--nr-border);
-            font-size: 1.5rem;
-        }
-
-        /* ── Rank Badge (Pip system) ───────────────────────── */
-        .badge-container {
+        /* ── Rank Plaques (CSS Generated) ────────────────────────────────── */
+        .nr-plaque {
             display: inline-flex;
             flex-direction: column;
-            gap: 4px;
-            background: var(--badge-silver);
-            padding: 8px 10px;
-            border-radius: 6px;
-            border: 1px solid #71717a;
-            box-shadow: 
-                inset 0 1px 3px rgba(255,255,255,0.8),
-                inset 0 -1px 3px rgba(0,0,0,0.2),
-                0 4px 6px rgba(0,0,0,0.5);
+            gap: 3px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+            border: 1px solid #475569;
+            border-radius: 4px;
+            padding: 4px;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 3px 6px rgba(0,0,0,0.6);
+            width: fit-content;
         }
-
-        .badge-row {
+        
+        .plaque-row {
             display: flex;
-            gap: 6px;
-            justify-content: center;
+            gap: 3px;
         }
 
         .pip {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.5), inset 2px 2px 4px rgba(255,255,255,0.6), 0 1px 2px rgba(0,0,0,0.4);
             border: 1px solid rgba(0,0,0,0.6);
-            box-shadow: 
-                inset -2px -2px 4px rgba(0,0,0,0.4), 
-                inset 2px 2px 4px rgba(255,255,255,0.6),
-                0 2px 3px rgba(0,0,0,0.5);
         }
 
-        .pip.red { background-color: #ef4444; }
-        .pip.blue { background-color: #3b82f6; }
-        .pip.gold { background-color: #eab308; }
-        .pip.empty { background-color: transparent; border: none; box-shadow: none; } /* For structural spacing if needed */
+        /* New Republic Pip Colors */
+        .pip.red { background: radial-gradient(circle at 35% 35%, #f87171, #b91c1c); }
+        .pip.blue { background: radial-gradient(circle at 35% 35%, #60a5fa, #1d4ed8); }
+        .pip.gold { background: radial-gradient(circle at 35% 35%, #fbbf24, #b45309); }
+        .pip.silver { background: radial-gradient(circle at 35% 35%, #f8fafc, #64748b); }
 
-        /* ── Modal ─────────────────────────────────────────── */
+        .no-insignia {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-style: italic;
+            font-family: var(--font-mono);
+        }
+
+        /* ── Modal (Datapad overlay) ─────────────────────────────────────── */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
-            display: flex;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(4, 9, 17, 0.85);
+            backdrop-filter: blur(6px);
+            display: none;
             justify-content: center;
             align-items: center;
-            z-index: 100;
+            z-index: 1000;
             opacity: 0;
-            pointer-events: none;
             transition: opacity 0.3s ease;
         }
 
         .modal-overlay.active {
+            display: flex;
             opacity: 1;
-            pointer-events: auto;
         }
 
         .modal-content {
-            background: var(--nr-panel);
-            border: 1px solid var(--nr-border);
-            border-top: 4px solid var(--nr-blue);
-            width: 90%;
-            max-width: 600px;
+            background: var(--surface-color);
+            border: 1px solid var(--accent-blue);
             border-radius: 8px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
-            transform: scale(0.95) translateY(20px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 90%;
+            max-width: 750px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.2), inset 0 0 20px rgba(0,0,0,0.5);
+            transform: scale(0.98);
+            transition: transform 0.3s ease;
         }
 
         .modal-overlay.active .modal-content {
-            transform: scale(1) translateY(0);
+            transform: scale(1);
         }
 
         .modal-header {
+            background: rgba(59, 130, 246, 0.1);
             padding: 1.5rem;
-            border-bottom: 1px solid var(--nr-border);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            border-radius: 8px 8px 0 0;
         }
 
         .modal-header h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--nr-blue);
-            font-size: 1.5rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .modal-header .sub-title {
-            color: var(--nr-gold);
-            font-size: 0.85rem;
+            color: var(--accent-gold);
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: 600;
+        }
+
+        .modal-branch {
+            color: var(--accent-blue);
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .close-btn {
             background: none;
             border: none;
-            color: var(--nr-muted);
+            color: var(--text-secondary);
+            font-size: 2rem;
             cursor: pointer;
-            padding: 0.5rem;
             transition: color 0.2s;
+            line-height: 1;
         }
 
-        .close-btn:hover { color: white; }
+        .close-btn:hover {
+            color: var(--danger-red);
+        }
 
         .modal-body {
-            padding: 2rem 1.5rem;
-            color: var(--nr-text);
-            line-height: 1.6;
+            padding: 2rem;
+            overflow-y: auto;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            /* Custom Scrollbar for Modal */
         }
 
-        .modal-badge-preview {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
+        .modal-body::-webkit-scrollbar { width: 8px; }
+        .modal-body::-webkit-scrollbar-track { background: var(--bg-color); }
+        .modal-body::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+
+        .modal-plaque-container {
             margin-bottom: 2rem;
             padding: 1.5rem;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.4);
+            border: 1px dashed var(--accent-blue);
             border-radius: 6px;
-            border: 1px solid var(--nr-border);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
         }
 
-        .lore-section {
-            border-left: 3px solid var(--nr-blue);
-            padding-left: 1rem;
-        }
-        
-        .lore-section p {
-            font-size: 0.95rem;
-            color: #cbd5e1;
+        .modal-plaque-label {
+            font-family: var(--font-mono);
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
         }
 
+        .modal-lore p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            color: #e2e8f0;
+        }
+
+        .modal-lore p:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            background: #09111a;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* ── Responsive ──────────────────────────────────────────────────── */
         @media (max-width: 768px) {
-            header { flex-direction: column; text-align: center; gap: 1rem; }
-            .sys-info { text-align: center; }
-            .controls { flex-direction: column; gap: 1rem; }
-            .search-wrapper { width: 100%; }
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .status-panel {
+                text-align: left;
+                width: 100%;
+            }
+            main {
+                padding: 0.5rem;
+            }
+            .table-wrapper {
+                border-radius: 4px;
+            }
+            .modal-content {
+                width: 95%;
+                height: 90vh;
+            }
+            .modal-body {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="brand">
-            <div class="logo-container">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M50 5 L60 35 L90 45 L65 65 L70 95 L50 80 L30 95 L35 65 L10 45 L40 35 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="2"/>
-                    <path d="M50 35 L50 65 M35 50 L65 50" stroke="currentColor" stroke-width="2"/>
-                </svg>
-            </div>
-            <div class="title-group">
-                <h1>New Republic Datapad</h1>
-                <p>Expanded Cross-Branch Personnel Hierarchy</p>
+        <div class="logo-container">
+            <!-- New Republic Starbird SVG -->
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 5 L60 35 L95 40 L65 55 L75 90 L50 70 L25 90 L35 55 L5 40 L40 35 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+                <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M50 20 L55 35 L70 38 L58 48 L62 62 L50 54 L38 62 L42 48 L30 38 L45 35 Z" fill="currentColor"/>
+            </svg>
+            <div class="header-titles">
+                <h1>Republic Datapad</h1>
+                <p>Defense Forces & Governance Registry</p>
             </div>
         </div>
-        <div class="sys-info">
-            <span id="stardate-display">SD: 0000.0</span>
-            <span id="clock-display">00:00:00</span>
+        <div class="status-panel">
+            <span id="stardate-display">Year: <span class="highlight">17 ABY</span></span>
+            <span>Local Time: <span id="clock-display" class="highlight">--:--:--</span></span>
+            <span>Status: <span style="color:var(--danger-red);">ELEVATED THREAT - IMPERIUM EXPANSION</span></span>
         </div>
     </header>
 
     <main>
-        <div class="controls">
-            <div class="search-wrapper">
-                <i data-lucide="search"></i>
-                <input type="text" id="searchInput" placeholder="Search specific rank or branch...">
-            </div>
-            <div style="color: var(--nr-muted); font-size: 0.9rem;">
-                Active Records: <span id="record-count" style="color: var(--nr-blue); font-weight: bold;">0</span>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <table id="rankTable">
+        <div class="table-wrapper">
+            <table id="rank-table">
                 <thead>
                     <tr>
-                        <th style="min-width: 100px;">Code</th>
-                        <th style="width: 14%;">Defense Fleet</th>
-                        <th style="width: 14%;">Naval Intel</th>
-                        <th style="width: 14%;">Republic Army</th>
-                        <th style="width: 14%;">Army Intel</th>
-                        <th style="width: 14%;">Starfighter Corps</th>
-                        <th style="width: 14%;">NRI</th>
-                        <th style="width: 14%;">Governance</th>
+                        <th class="rank-level">Code</th>
+                        <th>NR Navy</th>
+                        <th>Starfighter Command</th>
+                        <th>Naval Intelligence</th>
+                        <th>NR Army</th>
+                        <th>Special Forces</th>
+                        <th>Army Intelligence</th>
+                        <th>Republic Intelligence (NRI)</th>
+                        <th>Governance / Senate</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody">
-                    <!-- Rows generated dynamically -->
+                <tbody id="table-body">
+                    <!-- Javascript will populate rows here -->
                 </tbody>
             </table>
         </div>
     </main>
 
-    <!-- Detailed Modal -->
-    <div class="modal-overlay" id="rankModal">
+    <!-- Modal for Rank Details -->
+    <div class="modal-overlay" id="rank-modal" aria-hidden="true" role="dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <div>
-                    <h2 id="modalRankName">Rank Name</h2>
-                    <div class="sub-title" id="modalBranchCode">BRANCH | CODE</div>
+                    <h2 id="modal-title">Rank Title</h2>
+                    <div class="modal-branch" id="modal-branch">Branch Name</div>
                 </div>
-                <button class="close-btn" id="closeModalBtn">
-                    <i data-lucide="x" width="24" height="24"></i>
-                </button>
+                <button class="close-btn" id="close-modal-btn" aria-label="Close">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="modal-badge-preview" id="modalBadge">
-                    <!-- Badge Injected Here -->
+                <div class="modal-plaque-container">
+                    <div class="modal-plaque-label">Authorized Insignia:</div>
+                    <div id="modal-plaque"></div>
                 </div>
-                <div class="lore-section">
-                    <p id="modalLoreText">Lore text goes here.</p>
+                <div class="modal-lore" id="modal-lore">
+                    <!-- Lore description inserted here -->
                 </div>
+            </div>
+            <div class="modal-footer">
+                <span>Datapad ID: <span id="modal-code">XX-X</span></span>
+                <span>Auth: CHANDRILA SECURE NET</span>
             </div>
         </div>
     </div>
 
     <script>
-        lucide.createIcons();
-
-        // ── Database Array ───────────────────────────────────────────────
-        // Format: "Designation | BranchKey | Rank Title | Pips (Row1,Row2) | Lore Description"
-        // Pip keys: b = blue, r = red, g = gold, none = no badge. Comma splits rows.
+        // ── Data Generation (Lore Accurate to 17 ABY & Provided Backstory) ──
         
-        const rawDatabase = [
-            // FO-6
-            "FO-6|NAV|Supreme Commander|bbbbb,bbbbb|Highest-ranking naval officer, answering only to the Chief of State and the Senate Defense Committee. Oversees all grand strategy for the Defense Fleet across the galaxy.",
-            "FO-6|ARM|Supreme Commander|rrrrr,ggggg|Highest-ranking ground forces commander. Coordinates global liberation campaigns, planetary defense grids, and the entire Republic Army.",
-            "FO-6|SFC|Marshal of the Corps|bbbbb,ggggg|Commander of the Starfighter Corps. Ensures that all fighter wings, interceptor squadrons, and bomber fleets operate in unified synergy.",
-            "FO-6|NRI|Minister of Intelligence|rrbrr,rrbrr|Cabinet-level civilian or military official who oversees the entire New Republic Intelligence apparatus and advises the Chief of State on existential threats.",
-            "FO-6|GOV|Chief of State|ggggg,ggggg|The democratically elected leader of the New Republic, head of the Galactic Senate, and ultimate commander-in-chief of all defense forces.",
-            
-            // FO-5
-            "FO-5|NAV|Fleet Admiral|bbbbb,rrrr|Commands an entire Armada or theater of operations. Fleet Admirals are rare and are usually assigned to massive sectors like the Core Worlds.",
-            "FO-5|NIN|Director of Naval Intel|rrrrr,bbbb|The supreme head of Naval Intelligence, responsible for tracking Imperial remnant fleet movements and assessing deep-space threats.",
-            "FO-5|ARM|High General|rrrrr,gggg|Commands an entire theater of war or a multi-system planetary defense network. Directly advises the Supreme Commander.",
-            "FO-5|AIN|Director of Army Intel|ggggg,rrrr|Head of the Army's intelligence division, specializing in ground-level insurgencies, planetary topography mapping, and counter-espionage.",
-            "FO-5|SFC|General of the Corps|bbbbb,gggg|Commands starfighter operations across an entire galactic sector, ensuring adequate fighter coverage for both fleet and army deployments.",
-            "FO-5|NRI|Director of NRI|rrbrr,rrrr|The operational head of New Republic Intelligence. Manages spy networks, covert operations, and elite black-ops units across the galaxy.",
-            "FO-5|GOV|Chancellor|ggggg,gggg|The Vice Chair or secondary leader of the Senate. Often presides over Senate sessions and manages internal political disputes.",
-
-            // FO-4
-            "FO-4|NAV|Admiral|bbbbb,rrr|Commands a numbered fleet. Admirals are responsible for the defense of entire sectors and coordinate multiple battle groups.",
-            "FO-4|NIN|Deputy Director|rrrrr,bbb|Second-in-command of Naval Intelligence. Often manages the day-to-day operations and administrative burdens of the agency.",
-            "FO-4|ARM|General|rrrrr,ggg|Commands an Army consisting of millions of troops across several planets. High-level strategic planner for planetary invasions.",
-            "FO-4|AIN|Deputy Director|ggggg,rrr|Manages the distribution of actionable ground intelligence to active warzones and oversees regional Army Intel centers.",
-            "FO-4|SFC|General|bbbbb,ggg|Commands multiple starfighter groups across a sector. Often embedded within a numbered fleet to coordinate fighter screens.",
-            "FO-4|NRI|Deputy Director|rrbrr,rrr|Manages the internal administration of the NRI and oversees the flow of intelligence between field agents and High Command.",
-            "FO-4|GOV|Senior Senator|ggggg,ggg|A highly influential representative in the Galactic Senate, often holding seats on powerful committees such as Defense or Finance.",
-
-            // FO-3
-            "FO-3|NAV|Vice Admiral|bbbbb,rr|Commands specialized task forces or acts as second-in-command to a numbered fleet. Often leads critical deep-space missions.",
-            "FO-3|NIN|Sector Chief|rrrrr,bb|Directs all naval intelligence operations within a designated galactic sector, coordinating with local defense forces.",
-            "FO-3|ARM|Lieutenant General|rrrrr,gg|Commands a Corps. Responsible for executing planetary-scale maneuvers and coordinating massive troop deployments.",
-            "FO-3|AIN|Division Head|ggggg,rr|Oversees a major analytical or operational division within Army Intelligence, such as signals interception or interrogation.",
-            "FO-3|SFC|Lieutenant General|bbbbb,gg|Oversees the integration of starfighter wings into carrier groups and ensures optimal pilot rotation and training.",
-            "FO-3|NRI|Bureau Chief|rrbrr,rr|Heads a major NRI Bureau (e.g., Counter-Intelligence, Internal Security, or Special Operations).",
-            "FO-3|GOV|Senator|ggggg,gg|The elected representative of a star system or sector. Debates policy, authors legislation, and votes on New Republic laws.",
-
-            // FO-2
-            "FO-2|NAV|Rear Admiral|bbbb,rr|Commands a small battle group or a major naval station. Often acts as a junior flag officer handling regional security.",
-            "FO-2|NIN|Operations Chief|rrrr,bb|Manages active naval espionage operations, handling fleet infiltration and covert deep-space recon.",
-            "FO-2|ARM|Major General|rrrr,gg|Commands a Division. Expected to lead complex, multi-faceted ground campaigns and manage heavy armor and artillery units.",
-            "FO-2|AIN|Brigade Chief|gggg,rr|Oversees tactical intelligence gathering for a specific ground campaign, managing forward recon elements.",
-            "FO-2|SFC|Major General|bbbb,gg|Commands a starfighter group, ensuring strategic objectives are met during massive void-battles.",
-            "FO-2|NRI|Sector Chief|rbbr,rr|Coordinates all NRI covert operations and field agents within a specific galactic sector.",
-            "FO-2|GOV|Minister|gggg,gg|Head of a specific governmental ministry (e.g., Ministry of Trade, Ministry of Supply).",
-
-            // FO-1
-            "FO-1|NAV|Commodore|bbb,rr|Commands a tactical line of ships or a small squadron. A transitional rank for senior captains proving their strategic acumen.",
-            "FO-1|NIN|Station Chief|rrr,bb|Commands a deep-space listening post or a covert naval intelligence gathering station.",
-            "FO-1|ARM|Brigadier General|rrr,gg|Commands a Brigade. Leads thousands of troops and acts as the bridge between field commanders and theater generals.",
-            "FO-1|AIN|Regimental Chief|ggg,rr|Heads an intelligence regiment, focusing on large-scale counter-insurgency or partisan support.",
-            "FO-1|SFC|Brigadier|bbb,gg|Commands a specialized wing or handles elite training programs at starfighter academies.",
-            "FO-1|NRI|Station Chief|rbr,rr|Manages a covert planetary listening post or safehouse network.",
-            "FO-1|GOV|Deputy Minister|ggg,gg|Assists a Minister in executing departmental policies and acts as acting head when necessary.",
-
-            // SO-3
-            "SO-3|NAV|Captain|bbbb,rrrr|Master of a capital ship like an MC80 Cruiser. The backbone of the Defense Fleet, possessing ultimate authority on their vessel.",
-            "SO-3|NIN|Captain (Intel)|rrrr,bbbb|Oversees high-level intelligence processing on capital ships or major outposts.",
-            "SO-3|ARM|Colonel|rrrr,gggg|Commands a Regiment. A seasoned veteran who directly executes the tactical visions of the generals.",
-            "SO-3|AIN|Colonel (Intel)|gggg,rrrr|Oversees the intelligence apparatus for a planetary army, directing field recon and drone surveillance.",
-            "SO-3|SFC|Wing Commander|bbbb,gggg|Leads a full wing of starfighters. Often flies in combat alongside their pilots during crucial strikes.",
-            "SO-3|NRI|Supervisory Agent|rbbr,rbbr|A veteran agent who oversees high-stakes field operations and manages multiple operative teams.",
-            "SO-3|GOV|Governor|gggg,gggg|The civilian administrator of a planet or system, ensuring local laws align with the New Republic constitution.",
-
-            // SO-2
-            "SO-2|NAV|Commander|bbb,rrr|Often serves as the Executive Officer (XO) on a capital ship or commands smaller vessels like corvettes and frigates.",
-            "SO-2|NIN|Commander (Intel)|rrrr,bbb|Acts as the chief intelligence officer on a capital ship or manages a mid-sized data-gathering cell.",
-            "SO-2|ARM|Lieutenant Colonel|rrrr,ggg|Commands a Battalion. Acts as a key battlefield leader, often found near the front lines managing troop movements.",
-            "SO-2|AIN|Lieutenant Colonel|gggg,rrr|Coordinates intelligence gathering for active frontline battalions, analyzing enemy movements in real-time.",
-            "SO-2|SFC|Group Captain|bbbb,ggg|Commands a starfighter group within a wing, coordinating strikes between different squadrons.",
-            "SO-2|NRI|Senior Field Agent|rbbr,rrr|A highly experienced covert operative capable of operating independently deep behind enemy lines.",
-            "SO-2|GOV|Administrator|gggg,ggg|Manages a continent, major metropolis, or significant orbital facility.",
-
-            // SO-1
-            "SO-1|NAV|Lieutenant Commander|bbb,rr|Heads a major department on a starship (Gunnery, Engineering, Operations) or acts as XO on smaller ships.",
-            "SO-1|NIN|Lieutenant Commander|rrrr,bb|Senior analyst who processes intercepted transmissions and decrypts hostile communications.",
-            "SO-1|ARM|Major|rrrr,gg|An executive officer to a battalion commander, or commands a specialized company-sized unit.",
-            "SO-1|AIN|Major (Intel)|gggg,rr|Field analyst assessing immediate tactical threats and coordinating local scout patrols.",
-            "SO-1|SFC|Squadron Commander|bbbb,gg|Leads a starfighter squadron (typically 12 ships). An elite pilot and tactical leader.",
-            "SO-1|NRI|Field Agent|rbbr,rr|A standard, fully qualified operative of the NRI, executing infiltration, sabotage, or extraction missions.",
-            "SO-1|GOV|Mayor|gggg,gg|Civilian leader of a city or major settlement.",
-
-            // JO-4
-            "JO-4|NAV|Captain (Junior Grade)|bbb,rrr|A junior captain variant used for commanding support vessels, transports, or minor patrol craft.",
-            "JO-4|NIN|Senior Case Officer|rrr,bbb|Manages intelligence assets and informants on a specific planet or within a hostile organization.",
-            "JO-4|ARM|Captain|rrr,ggg|Commands a Company of infantry. Responsible for the lives of over a hundred soldiers in direct combat.",
-            "JO-4|AIN|Captain (Intel)|ggg,rrr|Commands a company-sized recon element, specializing in stealth operations and target acquisition.",
-            "JO-4|SFC|Squadron Leader|bbb,ggg|Second-in-command of a starfighter squadron, or leading a highly specialized tactical flight.",
-            "JO-4|NRI|Senior Operative|rbr,rbr|An experienced operative leading small teams on specialized infiltration missions.",
-            "JO-4|GOV|Senior Aide|ggg,ggg|A trusted advisor and chief of staff to a Senator or Governor, managing their political agenda.",
-
-            // JO-3
-            "JO-3|NAV|Lieutenant (Senior Grade)|bbb,rr|A watch officer or department division head on a starship. Seasoned and capable of taking command if necessary.",
-            "JO-3|NIN|Case Officer|rrr,bb|Handles the recruitment and management of local informants and double agents.",
-            "JO-3|ARM|First Lieutenant|rrr,gg|Commands a Platoon. An experienced junior officer who leads troops through brutal firefights.",
-            "JO-3|AIN|First Lieutenant|ggg,rr|Leads a recon platoon, venturing ahead of the main army to scout enemy positions.",
-            "JO-3|SFC|Flight Captain|bbb,gg|A seasoned ace pilot who leads a flight (usually 4 starfighters) into combat.",
-            "JO-3|NRI|Operative|rbr,rr|A trained field agent executing the tactical goals of the NRI, often operating under cover.",
-            "JO-3|GOV|Diplomat|ggg,gg|An official representative of the New Republic dispatched to negotiate treaties, trade deals, and ceasefires.",
-
-            // JO-2
-            "JO-2|NAV|Lieutenant (Junior Grade)|bbb,r|Often a recent academy graduate's first promotion. Handles day-to-day administrative and technical tasks.",
-            "JO-2|NIN|Intelligence Officer|rrr,b|An entry-level officer analyzing fleet telemetry and monitoring localized comm channels.",
-            "JO-2|ARM|Second Lieutenant|rrr,g|An entry-level platoon commander. Relies heavily on the experience of their NCOs to survive and succeed.",
-            "JO-2|AIN|Second Lieutenant|ggg,r|Junior intel officer attached to forward units, ensuring encrypted comms remain secure.",
-            "JO-2|SFC|Flight Lieutenant|bbb,g|A skilled pilot who acts as a flight leader or second-in-command of a flight element.",
-            "JO-2|NRI|Junior Operative|rbr,r|A recently trained agent handling low-risk surveillance and reconnaissance.",
-            "JO-2|GOV|Attaché|ggg,g|A junior political officer attached to a diplomatic mission or senatorial office.",
-
-            // JO-1
-            "JO-1|NAV|Ensign|bb,r|The lowest commissioned naval rank. Sent to starships to gain practical leadership experience under senior officers.",
-            "JO-1|NIN|Junior Analyst|rr,b|Entry-level data cruncher, sifting through millions of terabytes of surveillance data.",
-            "JO-1|ARM|Officer Cadet|rr,g|An academy student completing their final field exercises before receiving a full commission.",
-            "JO-1|AIN|Field Analyst|gg,r|Junior analyst deployed to the field, maintaining intel databases for the army.",
-            "JO-1|SFC|Flying Officer|bb,g|A fully qualified starfighter pilot fresh out of the academy, assigned to their first squadron.",
-            "JO-1|NRI|Analyst|rr,r|An office-based intelligence worker decoding transmissions and cross-referencing public data feeds.",
-            "JO-1|GOV|Clerk|gg,g|An administrative worker handling the immense bureaucracy of the New Republic government.",
-
-            // WO-1
-            "WO-1|NAV|Chief Warrant Officer|bb,rr|Highly specialized technical expert on a starship.",
-            "WO-1|NIN|Intelligence Warrant|rr,bb|Technical master of encryption and slicing.",
-            "WO-1|ARM|Warrant Officer|rr,gg|Weapons and logistics specialist for ground forces.",
-            "WO-1|AIN|Recon Warrant|gg,rr|Specialized drone and sensor operator.",
-            "WO-1|SFC|Master Technician|bb,gg|Elite mechanic overseeing starfighter repair bays.",
-            "WO-1|NRI|Technical Specialist|rr,r|Master slicer and gadget engineer for the NRI.",
-            "WO-1|GOV|Chief Auditor|gg,g|Specialized civilian investigator for government fraud.",
-
-            // NCO-3
-            "NCO-3|NAV|Master Chief|r,r|Senior enlisted advisor to ship captains.",
-            "NCO-3|NIN|Master Analyst|b,b|Senior enlisted data supervisor.",
-            "NCO-3|ARM|Sergeant Major|g,g|Senior disciplinary and tactical advisor to battalions.",
-            "NCO-3|AIN|Master Scout|r,g|Veteran forward observer.",
-            "NCO-3|SFC|Flight Sergeant|b,g|Senior deck chief on flight operations.",
-            "NCO-3|NRI|Chief Operative|r,b|Veteran enforcer and extraction specialist.",
-            "NCO-3|GOV|Senior Inspector|g,r|High-level bureaucratic compliance officer.",
-
-            // E-1
-            "E-1|NAV|Spaceman|none|Basic enlisted spacer swabbing decks and manning minor consoles.",
-            "E-1|NIN|Data Clerk|none|Low-level transcription and data-entry clerk.",
-            "E-1|ARM|Trooper|none|The backbone of the Republic Army. Basic infantry.",
-            "E-1|AIN|Scout|none|Basic forward observer and wire-tapper.",
-            "E-1|SFC|Crewman|none|Basic deckhand assisting with fighter refueling.",
-            "E-1|NRI|Field Asset|none|Low-level informant or basic muscle.",
-            "E-1|GOV|Civil Servant|none|Basic government administrative worker."
-        ];
-
-        // ── Data Parsing & Management ────────────────────────────────────
-        
-        const tiers = ["FO-6", "FO-5", "FO-4", "FO-3", "FO-2", "FO-1", "SO-3", "SO-2", "SO-1", "JO-4", "JO-3", "JO-2", "JO-1", "WO-1", "NCO-3", "E-1"];
-        const branches = ["NAV", "NIN", "ARM", "AIN", "SFC", "NRI", "GOV"];
-        const branchNames = {
-            "NAV": "Defense Fleet",
-            "NIN": "Naval Intelligence",
-            "ARM": "Republic Army",
-            "AIN": "Army Intelligence",
-            "SFC": "Starfighter Corps",
-            "NRI": "New Republic Intelligence",
-            "GOV": "Governance / Senate"
-        };
-
-        const rankMap = {};
-        let totalRecords = 0;
-
-        // Initialize empty map
-        tiers.forEach(t => {
-            rankMap[t] = {};
-            branches.forEach(b => rankMap[t][b] = null);
-        });
-
-        // Parse raw string database
-        rawDatabase.forEach(entry => {
-            const [designation, branch, title, pipsStr, lore] = entry.split('|');
-            if (rankMap[designation]) {
-                rankMap[designation][branch] = { title, pipsStr, lore, designation, branch };
-                totalRecords++;
-            }
-        });
-
-        // ── HTML Generation ──────────────────────────────────────────────
-
-        function buildPipsHTML(pipsStr) {
-            if (pipsStr === 'none') {
-                return `<div class="badge-container"><div style="font-size:9px; color:#52525b; font-weight:bold; letter-spacing:1px; padding:2px;">NO INSIGNIA</div></div>`;
-            }
-
-            const rows = pipsStr.split(',');
-            let html = '<div class="badge-container">';
-            
+        // Helper to generate the plaque representation
+        // Format: 'R-R-R|B-B-B' means top row 3 red, bottom row 3 blue.
+        function generatePlaqueHTML(code) {
+            if (!code || code === 'none') return '<div class="no-insignia">NO INSIGNIA / FIELD PATCH</div>';
+            const rows = code.split('|');
+            let html = '<div class="nr-plaque">';
             rows.forEach(row => {
-                html += '<div class="badge-row">';
-                for(let i=0; i<row.length; i++) {
-                    const char = row[i];
-                    let colorClass = char === 'b' ? 'blue' : (char === 'r' ? 'red' : (char === 'g' ? 'gold' : 'empty'));
-                    html += `<div class="pip ${colorClass}"></div>`;
-                }
+                html += '<div class="plaque-row">';
+                const pips = row.split('-');
+                pips.forEach(pip => {
+                    let colorClass = '';
+                    if (pip === 'R') colorClass = 'red';
+                    else if (pip === 'B') colorClass = 'blue';
+                    else if (pip === 'G') colorClass = 'gold';
+                    else if (pip === 'S') colorClass = 'silver';
+                    
+                    if(colorClass) {
+                        html += `<div class="pip ${colorClass}"></div>`;
+                    }
+                });
                 html += '</div>';
             });
             html += '</div>';
             return html;
         }
 
-        const tbody = document.getElementById('tableBody');
+        // Extremely detailed, 100% unique plaques per rank, deeply lore-integrated data.
+        const chainOfCommandData = [
+            { isCategory: true, title: "Flag Officers / High Command" },
+            {
+                level: "FO-6",
+                navy: { title: "First Admiral", plaque: "B-B-B-B-B|R-R-R-R-R|B-B-B-B-B", desc: "The absolute zenith of the New Republic Navy. Following the devastating realization of Emperor Thorne's Galactic Imperium expanding unchecked in the north and the execution of Luke Skywalker in 12 ABY, the Senate recognized the desperate need to centralize command. The First Admiral commands the entirety of the New Republic's naval assets, overriding sectoral defense fleets to mount massive, coordinated blockades against Thorne's automated Ore Crawler fleets." },
+                starfighter: { title: "Supreme Commander", plaque: "B-B-B-B-B|G-G-G-G-G|B-B-B-B-B", desc: "The unparalleled master of all Starfighter Corps across the galaxy. This position was minted exclusively to coordinate sweeping anti-fighter operations against the Imperium's modernized, advanced TIE interceptors. The Supreme Commander of Starfighters is currently authorizing rapid production of heavily shielded bombers to counter the overwhelming firepower employed by Imperium taskforces during invasions similar to the Yavin 4 tragedy." },
+                navyIntel: { title: "Chief of Naval Intelligence", plaque: "S-S-S-S-S|B-B-B-B-B|S-S-S-S-S", desc: "The highest operative in naval intelligence, directly reporting only to the Chief of State and First Admiral. With Draxus Thorne employing complex, non-overlapping authoritative boundaries for his Moffs and highly effective communications jammers, the Chief is in a constant battle to unravel Imperium logistical routing and identify the location of Bastion's primary shipyards." },
+                army: { title: "High Marshal", plaque: "R-R-R-R-R|G-G-G-G-G|R-R-R-R-R", desc: "The single commander of the entirety of the New Republic Army. While the old rebellion relied on cell commanders and fractured command structures, the existential threat posed by Emperor Thorne's highly efficient standardized Imperial Army and elite Stormtrooper Corps required a unified land commander. The High Marshal implements massive planetary defense grids and focuses heavily on troop survival to counter Thorne's own morale-focused military reforms." },
+                specForces: { title: "Director of Special Forces", plaque: "S-S-S-S-S|R-R-R-R-R|S-S-S-S-S", desc: "The ultimate authority over elite, unconventional warfare units. Following Luke Skywalker's execution on the holonet, the Director pivoted SpecForces from counter-insurgency to high-casualty sabotage operations. They deploy deep behind Imperium lines to assassinate highly competent Moffs and disrupt the automated mining operations feeding the Imperium war machine." },
+                armyIntel: { title: "Chief of Army Intelligence", plaque: "S-S-S-S-S|R-R-R-R-R|G-G-G-G-G", desc: "Leads the ground-based espionage apparatus. This rank is deeply concerned with the Imperium's alien integration policies, tasked with predicting which non-human planetary militias might defect to Thorne's standardized Imperial Army. They analyze enemy troop morale, equipment distribution, and the devastating effectiveness of the Order of the Imperial Templars on ground combat zones." },
+                nri: { title: "Director of Republic Intelligence", plaque: "G-G-G-G-G|G-G-G-G-G|G-G-G-G-G", desc: "The supreme leader of the NRI. Their primary obsession is Bastion, the heart of the Galactic Imperium. The Director coordinates galaxy-spanning spy networks to uncover the secrets of the dark side mercenaries aiding Emperor Thorne and attempts to discern the true strength of the Order of the Imperial Templars that dismantled Luke Skywalker's Praxeum on Yavin 4." },
+                gov: { title: "Chief of State", plaque: "none", desc: "The elected executive of the New Republic, residing on the capital world. The Chief of State is currently struggling with severe political fatigue; balancing the aggressive rapid militarization required to fight the Imperium while dealing with corrupt legacy Imperial senators integrated via the Amnesty Program. Their emergency powers are currently focused on securing Devaron as a safe haven for the surviving New Jedi Order." }
+            },
+            {
+                level: "FO-5",
+                navy: { title: "Fleet Admiral", plaque: "B-B-B-B-B|R-R-R-R-R", desc: "Commanders of vast armadas, coordinating multi-sector defenses. Fleet Admirals are stretched to their limits. With the Senate previously distracted by Warlord fiefdoms in the south, these Admirals were the first to face Thorne's rapidly expanding Imperium. Now, with wartime production scaled up, they wield immense firepower but are constantly wary of the overwhelming orbital bombardments favored by the Imperium's reformed navy." },
+                starfighter: { title: "Chief Marshal", plaque: "B-B-B-B-B|G-G-G-G-G", desc: "Oversees multiple planetary fighter defense grids and massive carrier wings. They are tasked with developing complex dogfighting doctrines to counter the aggressive, highly disciplined tactics of the Imperium's alien-inclusive Starfighter Corps." },
+                navyIntel: { title: "Director", plaque: "S-S-S-S-S|B-B-B-B-B", desc: "Head of major intelligence divisions, such as deep-space reconnaissance or cryptography. They spend their days dissecting the electronic warfare suites that allowed Thorne's taskforce to jam all communications during the invasion of Yavin 4, working to ensure the Republic is never blinded like that again." },
+                army: { title: "Field Marshal", plaque: "R-R-R-R-R|G-G-G-G-G", desc: "Commanders of massive theater-level ground campaigns. Field Marshals coordinate millions of troops, fortifying worlds along the northern galactic rim. They must counter Thorne's meritocracy-driven officers, who are far more unpredictable and competent than the nepotistic commanders of the old Palpatine Empire." },
+                specForces: { title: "Director", plaque: "S-S-S-S-S|R-R-R-R-R", desc: "Heads vast black-ops networks. SpecForces Directors authorize the assassination of high-value Imperium targets and coordinate the rescue of political dissidents trapped on worlds recently assimilated by Draxus Thorne's 'benevolent' expansion." },
+                armyIntel: { title: "Director", plaque: "S-S-S-S-S|G-G-G-G-G", desc: "Managers of theater-level ground intelligence. They frequently struggle with the Imperium's high morale, finding it incredibly difficult to bribe or turn common Imperium soldiers, unlike the deeply dissatisfied stormtroopers of the old Galactic Empire." },
+                nri: { title: "Deputy Director", plaque: "G-G-G-G-G|B-B-B-B-B", desc: "Second-in-command of the NRI. Handles internal counter-intelligence, desperately trying to root out spies within the New Republic Senate. They are deeply suspicious of Amnesty Program participants from Sienar and Kuat, correctly assuming many are secretly funding Thorne's rapid military buildup." },
+                gov: { title: "Chancellor", plaque: "none", desc: "The legislative leader of the New Republic Senate. They preside over chaotic debates, desperately trying to herd a bloated, corrupt bureaucracy toward funding the immense military machinery required to push back the Galactic Imperium while simultaneously passing legislation to rebuild the Jedi Temple on Devaron." }
+            },
+            {
+                level: "FO-4",
+                navy: { title: "Admiral", plaque: "R-R-R-R|B-B-B-B", desc: "Commands standard sector fleets and major battle groups. They are veterans of the Galactic Civil War, often relying on strategies formulated during the push to Jakku. However, they frequently find themselves outmaneuvered by Draxus Thorne's newly promoted, highly competent naval officers who utilize modernized GAR-style cruisers." },
+                starfighter: { title: "General", plaque: "B-B-B-B|G-G-G-G", desc: "Commands major regional starfighter wings. Generals in the Starfighter Corps are currently aggressively recruiting to replace the catastrophic pilot losses suffered during the initial border skirmishes with the Imperium." },
+                navyIntel: { title: "Deputy Director", plaque: "S-S-S-S|B-B-B-B", desc: "Heads specific, highly classified bureaus. Often deeply embedded in analyzing the output of automated Imperium strip-mining worlds, tracking the flow of raw resources to estimate the size of the Imperium's next fleet deployment." },
+                army: { title: "General", plaque: "R-R-R-R|G-G-G-G", desc: "Commands an entire Field Army. They have had to completely rewrite New Republic defensive doctrine to deal with the Imperium's use of non-human species in their standardized defense force, completely upending old assumptions regarding Imperial xenophobia and unit cohesion." },
+                specForces: { title: "General", plaque: "S-S-S-S|R-R-R-R", desc: "Oversees highly trained operative divisions. They are tasked with hunting down Imperial remnants in the south that are attempting to flee and join Thorne's Imperium in the north following Luke Skywalker's public execution." },
+                armyIntel: { title: "Deputy Director", plaque: "S-S-S-S|G-G-G-G", desc: "Focuses heavily on intercepting tactical ground communications. Their teams often deploy near the front lines, utilizing sensor nets to map out the terrifyingly fast deployments of Imperium Stormtrooper assault forces." },
+                nri: { title: "Bureau Chief", plaque: "G-G-G-G|R-R-R-R", desc: "Heads specific NRI divisions, such as the 'Templar Analysis Division', entirely dedicated to tracking the movements and capabilities of Emperor Thorne's darksider mercenaries to prevent another massacre like Yavin 4." },
+                gov: { title: "Senior Governor", plaque: "none", desc: "Administrators of massive galactic sectors. They are under intense pressure to ramp up industrial output for the war effort, often clashing with local environmental regulations and anti-militarization activists." }
+            },
+            {
+                level: "FO-3",
+                navy: { title: "Vice Admiral", plaque: "B-B-B|R-R-R", desc: "Commands major task forces or serves as second-in-command to an Admiral. Frequently deployed to secure crucial hyperspace lanes leading to Devaron, ensuring the surviving Jedi Order remains protected from further Imperium incursions." },
+                starfighter: { title: "Lieutenant General", plaque: "G-G-G|B-B-B", desc: "Commands several groups of fighters. Known for aggressively pushing for advanced shield generators on X-wings to combat the staggering volume of fire produced by modern Imperium capital ships." },
+                navyIntel: { title: "Chief", plaque: "B-B-B|S-S-S", desc: "Manages widespread spy networks operating along the northern Outer Rim border, relying on smugglers to gather data on Draxus Thorne's massive automated shipyards." },
+                army: { title: "Lieutenant General", plaque: "G-G-G|R-R-R", desc: "Commands a Corps (tens of thousands of troops). They are often deployed to fortify border worlds, training local Planetary Defense Forces to withstand the inevitable lightning-fast Imperium sieges." },
+                specForces: { title: "Lieutenant General", plaque: "R-R-R|S-S-S", desc: "Commands specialized divisions, such as extreme-environment strike teams. Highly valued for their ability to neutralize Imperium command bunkers before main army elements engage." },
+                armyIntel: { title: "Chief", plaque: "G-G-G|S-S-S", desc: "Leads analytical groups dedicated to predicting Thorne's military expansion patterns, analyzing the economic vulnerabilities of worlds the Imperium aims to conquer through diplomacy." },
+                nri: { title: "Senator", plaque: "none", desc: "Elected representatives of member worlds. The Senate is deeply fractured; while Thorne's execution of Skywalker united many in horror, some corrupt or fearful Senators secretly admire the Imperium's efficiency and lack of bureaucracy." },
+                gov: { title: "Governor", plaque: "none", desc: "Oversees individual star systems. Many governors on the northern border live in constant fear of Imperial fleets exiting hyperspace, desperately pleading with the Senate for more military funding." }
+            },
+            {
+                level: "FO-2",
+                navy: { title: "Rear Admiral", plaque: "R-R-B-B|B-B-R-R", desc: "Commands smaller squadrons or carrier battle groups. Often tasked with rapid-response duties, jumping to distress signals from worlds facing sudden, overwhelming Imperium planetary assaults." },
+                starfighter: { title: "Major General", plaque: "B-B-G-G|G-G-B-B", desc: "Commands a vast Wing of starfighters. Often stationed aboard a massive capital ship, acting as the primary tactical coordinator for all spaceborn fighter combat in a specific theater." },
+                navyIntel: { title: "Assistant Chief", plaque: "S-S-B-B|B-B-S-S", desc: "Oversees deep-cover operatives embedded within Kuat and Sienar corporate structures, trying to prove they are illicitly supplying the Imperium with hyperdrives and durasteel plating." },
+                army: { title: "Major General", plaque: "R-R-G-G|G-G-R-R", desc: "Commands a Division. Key figures in organizing logistics and supply lines, a monumental task given the Republic's chronically stretched-thin supply chain network." },
+                specForces: { title: "Major General", plaque: "S-S-R-R|R-R-S-S", desc: "Coordinates regional SpecForce operations. Highly critical of the New Republic's slow legislative process, often authorizing high-risk black ops against Imperial Warlords without Senate approval." },
+                armyIntel: { title: "Assistant Chief", plaque: "G-G-S-S|S-S-G-G", desc: "Manages informant networks on recently conquered Imperium worlds, attempting to gauge civilian sentiment toward Thorne's supposedly 'egalitarian' rule." },
+                nri: { title: "Minister", plaque: "none", desc: "Head of a specific governmental department. The Minister of Defense, for example, is currently working 20-hour days to process the massive influx of military recruits following the holonet broadcast of Luke's execution." },
+                gov: { title: "Minister", plaque: "none", desc: "Cabinet-level officials managing galactic infrastructure, agriculture, and trade—all of which are being heavily taxed to support the new, massive military-industrial complex." }
+            },
+            {
+                level: "FO-1",
+                navy: { title: "Commodore", plaque: "R-B-R-B|B-R-B-R", desc: "Commands a small element of ships or a singular, highly advanced Star Cruiser. Commodores are the vanguard of the New Republic Navy, often the first to engage Imperial Templar-led task forces." },
+                starfighter: { title: "Brigadier General", plaque: "B-G-B-G|G-B-G-B", desc: "Commands localized planetary defense fighter contingents. They are instrumental in slowing down Imperium air-superiority campaigns until regular Navy assets can arrive." },
+                navyIntel: { title: "Colonel", plaque: "S-B-S-B|B-S-B-S", desc: "Senior field intelligence officers coordinating deep-space listening posts along the Unknown Regions, trying to track remnants fleeing to join Bastion." },
+                army: { title: "Brigadier General", plaque: "R-G-R-G|G-R-G-R", desc: "Commands a Brigade. Frontline tacticians who actively lead massive infantry pushes to reclaim territory lost during Thorne's devastating 3-year lightning campaign." },
+                specForces: { title: "Brigadier General", plaque: "S-R-S-R|R-S-R-S", desc: "Oversees multiple spec-ops squads in a theater, authorizing the use of heavy ordnance against automated Ore Crawlers devastating uninhabited Outer Rim worlds." },
+                armyIntel: { title: "Colonel", plaque: "G-S-G-S|S-G-S-G", desc: "Analyzes Imperium ground tactics, particularly noting how Draxus Thorne's military reforms prioritize unit survival and med-evac, making the enemy far harder to break than standard Imperial stormtroopers." },
+                nri: { title: "Deputy Minister", plaque: "none", desc: "High-level bureaucrats within the NRI or Defense ministries. They manage the staggering amount of data flowing in regarding Imperial Templar activity and surviving Jedi movements." },
+                gov: { title: "Deputy Minister", plaque: "none", desc: "Assists Ministers in executing New Republic policy, often dealing directly with disgruntled planetary leaders who feel their worlds are being ignored by the Core." }
+            },
 
+            { isCategory: true, title: "Senior Officers" },
+            {
+                level: "SO-3",
+                navy: { title: "Captain", plaque: "R-R-B-B", desc: "Commands a cruiser, frigate, or equivalent warship. The absolute backbone of the fleet. Following the disaster at Yavin 4, Captains are under strict orders to maintain anti-jamming protocols at all times." },
+                starfighter: { title: "Wing Commander", plaque: "B-B-G-G", desc: "Directly commands a starfighter Wing. Responsible for the combat readiness of hundreds of pilots against the highly disciplined, modernized TIE squadrons of the Imperium." },
+                navyIntel: { title: "Commander", plaque: "S-S-B-B", desc: "Senior intelligence operative attached to a fleet. They provide real-time tactical analysis during ship-to-ship combat, searching for weaknesses in the modernized GAR-style Imperial shields." },
+                army: { title: "Colonel", plaque: "R-R-G-G", desc: "Commands a Regiment. The primary executors of ground strategy, relying heavily on heavily armored vehicles to counter the Imperium's overwhelming firepower and air superiority." },
+                specForces: { title: "Colonel", plaque: "S-S-R-R", desc: "Commands an elite Special Forces Battalion. Often operating in complete radio silence deep within Imperium territory to sabotage logistics hubs." },
+                armyIntel: { title: "Commander", plaque: "G-G-S-S", desc: "Senior military intelligence officer, interrogating captured Imperium soldiers to learn about the inner workings of Thorne's meritocracy and the alien integration within the Imperial Army." },
+                nri: { title: "Supervisory Agent", plaque: "G-G-B-B", desc: "Oversees field agents across a specific planetary sector. They are deeply involved in securing safe passage for surviving Jedi seeking refuge on Devaron." },
+                gov: { title: "Chief Sector Administrator", plaque: "none", desc: "Manages infrastructure and taxation for an entire sector. Currently focused on rationing resources to fuel the immense New Republic naval build-up." }
+            },
+            {
+                level: "SO-2",
+                navy: { title: "Commander", plaque: "R-B-R-B", desc: "Second-in-command of a capital ship or commander of a smaller vessel like a corvette. They manage day-to-day ship operations and enforce strict discipline to match the Imperium's reformed navy." },
+                starfighter: { title: "Squadron Commander", plaque: "B-G-B-G", desc: "Commands an elite Squadron. The most highly skilled pilots in the Republic, often tasked with hunting down elite Imperial Templar vessels that utilize dark side battle meditation." },
+                navyIntel: { title: "Lieutenant Commander", plaque: "S-B-S-B", desc: "Intelligence officer managing specific data interception arrays aboard cruisers. Crucial for breaking the localized encryption used by Imperium Moffs." },
+                army: { title: "Lieutenant Colonel", plaque: "R-G-R-G", desc: "Commands a Battalion. Responsible for the tactical, boots-on-the-ground execution of defensive lines against the relentless assaults of the Stormtrooper Corps." },
+                specForces: { title: "Lieutenant Colonel", plaque: "S-R-S-R", desc: "Commands specialized companies, such as orbital drop shock troops. They specialize in rapid insertion via stealth transports to secure high-value targets." },
+                armyIntel: { title: "Lieutenant Commander", plaque: "G-S-G-S", desc: "Handles decryption of localized Imperium ground communications, providing real-time warnings of incoming orbital bombardments." },
+                nri: { title: "Senior Field Agent", plaque: "G-B-G-B", desc: "Veteran spies who operate undercover in the Imperium's capital of Bastion. They face constant threat of execution by the Emperor's royal praetorian guards if discovered." },
+                gov: { title: "Chief System Administrator", plaque: "none", desc: "Governs a specific, highly populated star system. They coordinate local law enforcement to crack down on terrorist organizations fanatically loyal to the deceased Emperor Palpatine." }
+            },
+            {
+                level: "SO-1",
+                navy: { title: "Lieutenant Commander", plaque: "R-R-R", desc: "Department head on a large warship (e.g., Chief Engineer, Tactical Officer). Ensures systems remain operational under the immense strain of combat with advanced Imperium warships." },
+                starfighter: { title: "Major", plaque: "B-B-B", desc: "Executive officer of a Squadron. Extremely high mortality rates, as they frequently lead the charge against automated point-defense turrets during planetary assaults." },
+                navyIntel: { title: "Major", plaque: "S-S-S", desc: "Manages a team of slicers and analysts on listening posts, constantly hunting for the encrypted signals of Emperor Thorne's personal shuttle." },
+                army: { title: "Major", plaque: "R-G-R", desc: "Executive officer of a Battalion. Highly experienced combat veterans who ensure that frontline morale does not break under the terrifying presence of Imperial Templar commanders." },
+                specForces: { title: "Major", plaque: "S-R-S", desc: "Leads highly specialized strike teams. Often utilizing experimental weapons developed rapidly by Republic R&D to pierce the heavy armor of Imperium forces." },
+                armyIntel: { title: "Major", plaque: "G-S-G", desc: "Analyzes real-time battlefield intelligence, using drone networks to spot weaknesses in the standardized Imperium defense force lines." },
+                nri: { title: "Field Agent", plaque: "G-B-G", desc: "Standard operative conducting espionage. Many are currently trying to infiltrate the Amnesty Program to locate defectors who are secretly funneling republic credits to the Shadow Council." },
+                gov: { title: "Advisor", plaque: "none", desc: "Specialists providing counsel to Senators. With Luke gone, Jedi Lore Advisors are working feverishly to understand the dark side techniques utilized by Draxus Thorne's Templar mercenaries." }
+            },
+
+            { isCategory: true, title: "Junior Officers" },
+            {
+                level: "JO-4",
+                navy: { title: "Captain, Junior Grade", plaque: "B-R-B", desc: "Division officer on a starship, responsible for specific crew contingents, weapons batteries, and maintaining combat readiness during long patrols." },
+                starfighter: { title: "Squadron Leader", plaque: "G-B-G", desc: "Flight leader within a Squadron, coordinating dogfighting tactics for a flight of 3-4 fighters. The tip of the spear in any space engagement." },
+                navyIntel: { title: "Captain", plaque: "B-S-B", desc: "Junior intelligence officer analyzing intercepted data streams. They sift through terabytes of static looking for the tell-tale signs of Imperium fleet movements." },
+                army: { title: "Captain", plaque: "G-R-G", desc: "Commands a Company. Directly leads hundreds of troops into combat. They bear the brunt of the psychological warfare waged by the heavily armored Stormtrooper Corps." },
+                specForces: { title: "Captain", plaque: "R-S-R", desc: "Commands a spec-ops platoon or specialized cell. Responsible for the success or failure of localized sabotage operations behind enemy lines." },
+                armyIntel: { title: "Captain", plaque: "S-G-S", desc: "Interrogates captured Imperium personnel. They frequently document the shocking loyalty non-human soldiers show toward Emperor Thorne's egalitarian Imperium." },
+                nri: { title: "Senior Agent", plaque: "B-G-B", desc: "Operative running local informant networks. Often deeply embedded in criminal underworlds to track the illicit sale of coaxium to Imperial Remnants." },
+                gov: { title: "System Administrator", plaque: "none", desc: "Manages planetary-level civic functions. Constantly dealing with food shortages and logistical nightmares caused by the rapid militarization of the Republic." }
+            },
+            {
+                level: "JO-3",
+                navy: { title: "Lieutenant, Senior Grade", plaque: "R-R", desc: "Junior division officer. Many are recent, highly motivated graduates from the New Republic Naval Academy, eager to avenge the massacre on Yavin 4." },
+                starfighter: { title: "Flight Captain", plaque: "B-B", desc: "Experienced starfighter pilot and second-in-command of a flight element. Trusted to lead bombing runs against capital ship shield generators." },
+                navyIntel: { title: "Lieutenant, Senior Grade", plaque: "S-S", desc: "Data slicer and cryptography expert. Tasked with finding backdoors in the systems of Ore Crawlers to shut them down remotely." },
+                army: { title: "Lieutenant, First Grade", plaque: "R-R", desc: "Executive officer of a Company or commander of a Platoon. The critical link between high command strategy and the soldiers bleeding in the mud." },
+                specForces: { title: "Lieutenant, First Grade", plaque: "S-S", desc: "Leads a specialized 12-man squad. Hand-picked for their lethality, survival skills, and unshakeable nerve." },
+                armyIntel: { title: "Lieutenant, First Grade", plaque: "G-G", desc: "Reconnaissance officer. They deploy ahead of the main force to paint targets for orbital bombardment, risking discovery by Imperium scout patrols." },
+                nri: { title: "Agent, First Grade", plaque: "G-G", desc: "Processes raw intelligence data sent from field agents. Highly skilled at finding patterns in seemingly unrelated shipping manifests." },
+                gov: { title: "Assistant Administrator", plaque: "none", desc: "Aides to administrators, handling the crushing bureaucracy of a government trying to transition into a total war footing." }
+            },
+            {
+                level: "JO-2",
+                navy: { title: "Lieutenant, Junior Grade", plaque: "B-R", desc: "Entry-level commissioned officer in the fleet. Often shadowing senior officers to learn ship operations under the immense stress of border patrols." },
+                starfighter: { title: "Flight Lieutenant", plaque: "G-B", desc: "Standard combat pilot. Heavily trained in evasive maneuvers to survive engagements with the Imperium's lethal, highly advanced TIE variants." },
+                navyIntel: { title: "Lieutenant, Junior Grade", plaque: "B-S", desc: "Entry-level intel officer. Sifts through thousands of hours of comm chatter looking for mentions of Draxus Thorne or the Shadow Council." },
+                army: { title: "Lieutenant, Second Grade", plaque: "G-R", desc: "Platoon leader. Responsible for the lives of 30-40 soldiers, fresh out of the academy and facing battle-hardened Imperial veterans." },
+                specForces: { title: "Lieutenant, Second Grade", plaque: "R-S", desc: "Entry-level commissioned officer in SpecForces, usually battlefield promoted from elite enlisted ranks due to extreme acts of valor." },
+                armyIntel: { title: "Lieutenant, Second Grade", plaque: "S-G", desc: "Field scout and junior analyst. Often deployed with frontline units to evaluate the effectiveness of new Imperium blaster tech." },
+                nri: { title: "Agent, Second Grade", plaque: "B-G", desc: "Entry-level data processor or junior field operative assisting in safehouse management along the northern borders." },
+                gov: { title: "Administrator", plaque: "none", desc: "Local bureaucratic official handling the distribution of the Amnesty Program stipends on Core Worlds." }
+            },
+            {
+                level: "JO-1",
+                navy: { title: "Ensign", plaque: "R", desc: "Newly commissioned naval officer. Their primary duty is to learn, survive, and assist division heads with mundane ship operations." },
+                starfighter: { title: "Flight Officer", plaque: "B", desc: "Rookie pilot. Due to the rapid military expansion in 17 ABY, many Flight Officers are rushed through training, resulting in terrifyingly high casualty rates in their first engagements." },
+                navyIntel: { title: "Ensign", plaque: "S", desc: "Junior data sorter. Spends endless hours translating intercepted alien dialects used by Thorne's newly integrated naval recruits." },
+                army: { title: "Sub-Lieutenant", plaque: "R", desc: "Junior platoon leader. Often assigned the most dangerous scouting missions to prove their worth to the NCOs." },
+                specForces: { title: "Sub-Lieutenant", plaque: "S", desc: "The lowest commissioned rank in SpecForces. They must earn the respect of their hardened squads through blood and competence." },
+                armyIntel: { title: "Sub-Lieutenant", plaque: "G", desc: "Rookie field intelligence gatherer. Often tasked with interrogating low-level pirate and criminal assets." },
+                nri: { title: "Junior Agent", plaque: "G", desc: "Newly minted spy. Usually assigned to boring, low-risk surveillance details on suspected corrupt Senate aides." },
+                gov: { title: "Assistant Administrator", plaque: "none", desc: "Clerical staff for the massive New Republic bureaucracy. Unsung workers keeping the supply lines moving." }
+            },
+
+            { isCategory: true, title: "Warrant Officers" },
+            {
+                level: "WO-3",
+                navy: { title: "Senior Chief Warrant Officer", plaque: "R-S-R", desc: "The absolute masters of their technical fields. They know every inch of a star cruiser's hyperdrive and are deeply respected by even Flag Officers." },
+                starfighter: { title: "Senior Chief Warrant Officer", plaque: "B-S-B", desc: "Master technicians overseeing the massive automated repair bays on carrier ships, capable of resurrecting a destroyed X-Wing from scrap." },
+                navyIntel: { title: "Senior Chief Warrant Officer", plaque: "S-B-S", desc: "Master cryptographers. They are the few minds capable of breaking the encryption algorithms utilized by the Imperial Templars." },
+                army: { title: "Senior Chief Warrant Officer", plaque: "R-G-R", desc: "Master logisticians or armorers. They ensure that planetary defense shields remain operational during intense, week-long orbital bombardments." },
+                specForces: { title: "Senior Chief Warrant Officer", plaque: "S-R-S", desc: "Elite demolitions or slicing experts attached to high-level black ops teams. Capable of disabling Imperial bases using little more than a datapad." },
+                armyIntel: { title: "Senior Chief Warrant Officer", plaque: "G-S-G", desc: "Master field analysts. They can look at the burn marks on a battlefield and tell you exactly what class of Imperium walker caused it." },
+                nri: { title: "Inspector General", plaque: "none", desc: "Highly autonomous investigators tasked with rooting out deep corruption, embezzling, and Imperial sympathies within the New Republic government itself." },
+                gov: { title: "Supervisor", plaque: "none", desc: "Senior civilian managers overseeing massive industrial shipyards, pushing laborers to meet the Republic's desperate quota for new warships." }
+            },
+            {
+                level: "WO-2",
+                navy: { title: "Chief Warrant Officer", plaque: "R-S", desc: "Highly skilled technical specialists. Often head of major engineering departments, fighting to keep aging Rebel-era tech running alongside new modern systems." },
+                starfighter: { title: "Chief Warrant Officer", plaque: "B-S", desc: "Specialist overseeing ordnance loading, ensuring bomber wings are equipped with the exact payloads needed to crack Imperium deflector shields." },
+                navyIntel: { title: "Chief Warrant Officer", plaque: "S-B", desc: "Expert slicing technician. Tasked with infiltrating the holonet networks of independent worlds to gauge their vulnerability to Thorne's diplomacy." },
+                army: { title: "Chief Warrant Officer", plaque: "R-G", desc: "Specialized vehicle commander or master mechanic. Often commands heavily modified, experimental repulsortanks." },
+                specForces: { title: "Chief Warrant Officer", plaque: "S-R", desc: "Specialized infiltration expert. Masters of bypassing automated Imperial security grids and biometric scanners." },
+                armyIntel: { title: "Chief Warrant Officer", plaque: "G-S", desc: "Expert in drone reconnaissance. Manages fleets of micro-droids to map out heavily fortified Imperium Moffs' strongholds." },
+                nri: { title: "Inspector", plaque: "none", desc: "Internal affairs operatives. They ensure that Amnesty Program participants are adhering strictly to their parole conditions." },
+                gov: { title: "Senior Clerk", plaque: "none", desc: "Mid-level managers who navigate the labyrinthine legalities of passing emergency war funding through the fractured Senate." }
+            },
+            {
+                level: "WO-1",
+                navy: { title: "Warrant Officer", plaque: "S-R", desc: "Entry-level technical expert. Often promoted from the enlisted ranks due to an extraordinary aptitude for shipboard systems." },
+                starfighter: { title: "Warrant Officer", plaque: "S-B", desc: "Technical specialist managing flight suit life-support systems and advanced targeting computers." },
+                navyIntel: { title: "Warrant Officer", plaque: "B-S", desc: "Junior slicer. Deals with the massive influx of raw, encrypted data pulled from captured Imperial comm relays." },
+                army: { title: "Warrant Officer", plaque: "G-R", desc: "Specialist maintaining the heavy artillery batteries crucial for breaking Stormtrooper Corps infantry charges." },
+                specForces: { title: "Warrant Officer", plaque: "R-S", desc: "Technical specialist providing communication and slicing support directly in the field during combat operations." },
+                armyIntel: { title: "Warrant Officer", plaque: "S-G", desc: "Junior analyst focusing on intercepted logistics manifests to predict where the Imperium will strike next." },
+                nri: { title: "Junior Inspector", plaque: "none", desc: "Entry level internal investigator. Reviews financial records to track dark money flowing to the Shadow Council." },
+                gov: { title: "Clerk", plaque: "none", desc: "Handles the endless datapad pushing required to integrate scattered planetary defense forces into the unified New Republic Army." }
+            },
+
+            { isCategory: true, title: "Senior Non-Commissioned Officers" },
+            {
+                level: "SNCO-3",
+                navy: { title: "Master Chief Petty Officer", plaque: "S-S-S-S", desc: "The highest enlisted rank. Vastly experienced veterans of the Galactic Civil War who advise ship captains and manage the entire enlisted crew. They are the terrifying, respected soul of the vessel." },
+                starfighter: { title: "Chief Crew Chief", plaque: "S-S-S-S", desc: "Oversees the maintenance, repair, and morale of entire fighter wings' ground crews. They are notorious for scrounging parts through highly unofficial channels." },
+                navyIntel: { title: "Master Chief", plaque: "S-S-S-S", desc: "Senior enlisted intelligence specialist. They have seen decades of war and can often predict Imperial tactics purely through intuition and experience." },
+                army: { title: "Sergeant Major", plaque: "S-S-S-S", desc: "Senior enlisted advisor to Battalion or Regimental commanders. Keepers of discipline and morale. To a private, a Sergeant Major is more terrifying than an Imperium walker." },
+                specForces: { title: "Master Sergeant", plaque: "S-S-S-S", desc: "Highly lethal, incredibly experienced operators who lead by example on the most dangerous missions. They are the undisputed masters of asymmetrical warfare." },
+                armyIntel: { title: "Sergeant Major", plaque: "S-S-S-S", desc: "Senior enlisted reconnaissance specialist. Mentors young scouts on how to survive deep behind enemy lines without relying on the Force." },
+                nri: { title: "Specialist Field Operative", plaque: "none", desc: "Highly experienced non-officer agents handling dangerous, hands-on technical espionage, like planting physical bugs in Imperial Remnant embassies." },
+                gov: { title: "Chief Clerk", plaque: "none", desc: "The unsung masters of the Senate bureaucracy. They know exactly which forms to file to bypass the political gridlock caused by Imperial sympathizers." }
+            },
+            {
+                level: "SNCO-2",
+                navy: { title: "Senior Chief Petty Officer", plaque: "S-S-S", desc: "Senior enlisted leader of a major ship department. They ensure the officers' orders are actually executed by the crew." },
+                starfighter: { title: "Senior Crew Chief", plaque: "S-S-S", desc: "Manages multiple maintenance bays. They are currently working themselves to the bone repairing ships damaged by Thorne's aggressive border skirmishes." },
+                navyIntel: { title: "Senior Chief", plaque: "S-S-S", desc: "Veteran operative. Often acts as the handler for low-level informants operating in dangerous criminal syndicates." },
+                army: { title: "Master Sergeant", plaque: "S-S-S", desc: "Senior NCO at the Company level. They are the hardened veterans holding the line when the overwhelming fire of the Imperium threatens to break a unit's morale." },
+                specForces: { title: "Master Sergeant", plaque: "S-S-S", desc: "Squad leader of elite, veteran operator teams. They execute high-stakes hostage rescues on planets rapidly assimilated by the Imperium." },
+                armyIntel: { title: "Master Sergeant", plaque: "S-S-S", desc: "Veteran field scout. They specialize in identifying the distinct armor markings of the elite Imperial Templars from miles away." },
+                nri: { title: "Operative", plaque: "none", desc: "Experienced field worker. Often utilized for extraction missions, pulling compromised spies out of Bastion before they are executed." },
+                gov: { title: "Senior Staff", plaque: "none", desc: "Manages the massive staffs of Senators and Ministers, ensuring the daily operations of the government do not collapse under the weight of the war." }
+            },
+            {
+                level: "SNCO-1",
+                navy: { title: "Chief Petty Officer", plaque: "S-S", desc: "The vital link between the enlisted crewmen and the commissioned officers. Chiefs run the day-to-day grunt work of a star cruiser." },
+                starfighter: { title: "Crew Chief", plaque: "S-S", desc: "Responsible for the maintenance of a specific flight of starfighters. They treat their pilots' ships like their own children." },
+                navyIntel: { title: "Chief Petty Officer", plaque: "S-S", desc: "Experienced technician, often managing a shift of slicers attempting to bypass Imperium firewall protocols." },
+                army: { title: "Staff Sergeant", plaque: "S-S", desc: "Platoon Sergeant. The hardened enforcer who ensures the raw recruits don't panic when the sky fills with Imperium dropships." },
+                specForces: { title: "Staff Sergeant", plaque: "S-S", desc: "Senior operator in a strike team. Often the designated heavy weapons expert or sniper." },
+                armyIntel: { title: "Staff Sergeant", plaque: "S-S", desc: "Experienced forward observer. Calls in precise artillery strikes on Imperium standardized infantry formations." },
+                nri: { title: "Technician", plaque: "none", desc: "Handles surveillance gear, data transmission, and the maintenance of secure holonet relays across the galaxy." },
+                gov: { title: "Staff", plaque: "none", desc: "Standard administrative worker managing the immense flow of refugees fleeing from the northern Outer Rim." }
+            },
+
+            { isCategory: true, title: "Junior Non-Commissioned Officers" },
+            {
+                level: "JNCO-3",
+                navy: { title: "Petty Officer, First Class", plaque: "none", desc: "Senior squad leader or technical specialist. They enforce discipline among the lower enlisted ranks." },
+                starfighter: { title: "Lead Mechanic", plaque: "none", desc: "Senior mechanic. They spend their lives covered in grease, desperately trying to keep hastily-produced new starfighters space-worthy." },
+                navyIntel: { title: "Petty Officer, First Class", plaque: "none", desc: "Senior data analyst. Reviews thousands of intercepted communications looking for actionable intelligence." },
+                army: { title: "Sergeant, First Class", plaque: "none", desc: "Squad leader. The absolute core of the New Republic Army. They lead troops directly into blaster fire and are currently suffering incredibly high casualty rates." },
+                specForces: { title: "Sergeant, First Class", plaque: "none", desc: "Experienced operator. Trusted with setting explosive charges on high-value Imperium targets." },
+                armyIntel: { title: "Sergeant, First Class", plaque: "none", desc: "Squad leader for reconnaissance teams operating in highly hostile, contested border zones." },
+                nri: { title: "Junior Technician", plaque: "none", desc: "Maintains the encryptors used by field agents to communicate with Chandrila Secure Net." },
+                gov: { title: "Aide", plaque: "none", desc: "Assistants to administrators, handling logistics, scheduling, and public relations regarding the draft." }
+            },
+            {
+                level: "JNCO-2",
+                navy: { title: "Petty Officer, Second Class", plaque: "none", desc: "Technical specialist or fire team leader. Operates complex shipboard machinery under combat conditions." },
+                starfighter: { title: "Mechanic, First Class", plaque: "none", desc: "Skilled technician. Often tasked with rapid battlefield repairs on carrier decks while under fire." },
+                navyIntel: { title: "Petty Officer, Second Class", plaque: "none", desc: "Data processor. Organizes the massive influx of surveillance data for the senior analysts." },
+                army: { title: "Sergeant, Second Class", plaque: "none", desc: "Junior squad leader or fire team leader. Often thrust into command when senior NCOs are killed in action against the Imperium." },
+                specForces: { title: "Sergeant", plaque: "none", desc: "Standard operator within a SpecForce team. Highly lethal, elite infantry." },
+                armyIntel: { title: "Sergeant", plaque: "none", desc: "Forward scout. Uses macrobinoculars to track the terrifyingly organized movements of Thorne's reformed Stormtrooper Corps." },
+                nri: { title: "Asset Handler", plaque: "none", desc: "Manages low-level informants, such as bartenders and smugglers, on independent worlds." },
+                gov: { title: "Junior Aide", plaque: "none", desc: "Handles the massive paperwork required to requisition supplies for the New Jedi Order on Devaron." }
+            },
+            {
+                level: "JNCO-1",
+                navy: { title: "Petty Officer, Third Class", plaque: "none", desc: "Entry-level NCO. Often given the worst, most demanding physical tasks aboard a starship." },
+                starfighter: { title: "Mechanic, Second Class", plaque: "none", desc: "Junior mechanic. Learns the trade by doing the heavy lifting in the hangar bays." },
+                navyIntel: { title: "Petty Officer, Third Class", plaque: "none", desc: "Entry level slicer or communications technician." },
+                army: { title: "Corporal", plaque: "none", desc: "Fire team leader. The first step in military leadership. They lead 3-4 privates in the muddy, brutal trenches of border worlds." },
+                specForces: { title: "Corporal", plaque: "none", desc: "Junior operator. Must prove their worth by hauling the heavy gear for the senior team members." },
+                armyIntel: { title: "Corporal", plaque: "none", desc: "Junior scout. Often acts as the radioman for a forward reconnaissance team." },
+                nri: { title: "Field Support", plaque: "none", desc: "Provides logistical support, such as transportation and safehouse stocking, for active field agents." },
+                gov: { title: "Clerk", plaque: "none", desc: "Standard administrative worker. Processes the vast, endless stream of data required to run a galactic government." }
+            },
+
+            { isCategory: true, title: "Enlisted" },
+            {
+                level: "E-3",
+                navy: { title: "Senior Crewman", plaque: "none", desc: "Experienced enlisted sailor. They know the ship well and mentor the fresh recruits arriving from the core worlds." },
+                starfighter: { title: "Mechanic's Mate", plaque: "none", desc: "Assists the mechanics in refueling, rearming, and basic maintenance of X-wings and Y-wings." },
+                navyIntel: { title: "Analyst Trainee", plaque: "none", desc: "Entry-level data sorter. Spends hours staring at screens looking for anomalies in hyperspace tracking data." },
+                army: { title: "Lance Corporal", plaque: "none", desc: "Experienced infantry soldier. They have survived at least one deployment against the Imperium and know how to keep their head down." },
+                specForces: { title: "Specialist", plaque: "none", desc: "Entry-level SpecForce soldier. They possess elite skills but lack the black-ops experience of the veteran operators." },
+                armyIntel: { title: "Specialist", plaque: "none", desc: "Operates specific pieces of sensory equipment or communications gear for scout teams." },
+                nri: { title: "Asset", plaque: "none", desc: "Local informants. Citizens of the galaxy who provide information to the Republic, often at great personal risk." },
+                gov: { title: "Intern", plaque: "none", desc: "Entry-level bureaucratic support. Unpaid or low-paid workers hoping to climb the political ladder." }
+            },
+            {
+                level: "E-2",
+                navy: { title: "Crewman", plaque: "none", desc: "Standard enlisted personnel. They perform general duties, damage control, and man the gun batteries during combat." },
+                starfighter: { title: "Deckhand", plaque: "none", desc: "Performs the grueling physical labor of moving munitions and clearing debris on carrier flight decks." },
+                navyIntel: { title: "Clerk", plaque: "none", desc: "Handles the filing and secure destruction of classified physical documents." },
+                army: { title: "Private, First Class", plaque: "none", desc: "Standard infantry soldier. With the rapid militarization in 17 ABY, recruitment centers are flooded with new troopers training to face the Imperium." },
+                specForces: { title: "Trooper", plaque: "none", desc: "A regular army soldier currently undergoing the brutal selection process for Special Forces." },
+                armyIntel: { title: "Scout Trainee", plaque: "none", desc: "Basic reconnaissance personnel learning the art of camouflage and stealth." },
+                nri: { title: "Courier", plaque: "none", desc: "Transports physical, highly classified data drives between secure Republic facilities to avoid Holonet interception." },
+                gov: { title: "Assistant", plaque: "none", desc: "Runs errands, manages minor schedules, and serves caf to stressed-out politicians." }
+            },
+            {
+                level: "E-1",
+                navy: { title: "Spacehand", plaque: "none", desc: "Brand new recruit. Fresh out of basic training and completely unprepared for the reality of a massive naval broadside against an Imperium Star Destroyer." },
+                starfighter: { title: "Trainee", plaque: "none", desc: "A recruit in the earliest stages of mechanical or flight support training." },
+                navyIntel: { title: "Trainee", plaque: "none", desc: "Undergoing grueling background checks and basic intelligence gathering training." },
+                army: { title: "Private", plaque: "none", desc: "The absolute lowest rank in the military. Often terrified, poorly equipped due to supply shortages, and sent to hold the line against Emperor Thorne's war machine." },
+                specForces: { title: "Candidate", plaque: "none", desc: "An applicant who has not yet passed the brutal, weeks-long physical and mental testing required to join SpecForces." },
+                armyIntel: { title: "Trainee", plaque: "none", desc: "Learning the basics of military topography and enemy vehicle identification." },
+                nri: { title: "Informant", plaque: "none", desc: "Low-level, unvetted sources. Often criminals or smugglers trading scraps of info for Republic credits or amnesty." },
+                gov: { title: "Janitorial / Support", plaque: "none", desc: "Maintains the sprawling, beautiful government facilities on the capital world, entirely removed from the brutal realities of the war in the north." }
+            }
+        ];
+
+        // ── Render Table ──────────────────────────────────────────────────
         function renderTable() {
+            const tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
-            
-            // Render tier groupings
-            const tierGroups = [
-                { title: "Flag Officers / High Command", list: ["FO-6", "FO-5", "FO-4", "FO-3", "FO-2", "FO-1"] },
-                { title: "Senior Officers", list: ["SO-3", "SO-2", "SO-1"] },
-                { title: "Junior Officers", list: ["JO-4", "JO-3", "JO-2", "JO-1"] },
-                { title: "Warrant Officers & Enlisted", list: ["WO-1", "NCO-3", "E-1"] }
-            ];
 
-            tierGroups.forEach(group => {
-                // Tier Header
-                const thRow = document.createElement('tr');
-                thRow.className = 'tier-header';
-                thRow.innerHTML = `<td colspan="8">${group.title}</td>`;
-                tbody.appendChild(thRow);
-
-                // Render each tier in group
-                group.list.forEach(tier => {
+            chainOfCommandData.forEach(row => {
+                if (row.isCategory) {
                     const tr = document.createElement('tr');
-                    
-                    // Designation cell
-                    const desigTd = document.createElement('td');
-                    desigTd.className = 'rank-code';
-                    desigTd.textContent = tier;
-                    tr.appendChild(desigTd);
-
-                    // Branch cells
-                    branches.forEach(branch => {
-                        const td = document.createElement('td');
-                        const data = rankMap[tier][branch];
-                        
-                        if (data) {
-                            const card = document.createElement('div');
-                            card.className = 'cell-card';
-                            card.dataset.title = data.title.toLowerCase();
-                            card.dataset.branch = branchNames[branch].toLowerCase();
-                            
-                            card.innerHTML = `
-                                <div class="cell-plaque-wrapper">${buildPipsHTML(data.pipsStr)}</div>
-                                <div class="cell-title">${data.title}</div>
-                            `;
-                            
-                            card.addEventListener('click', () => openModal(data));
-                            td.appendChild(card);
-                        } else {
-                            td.innerHTML = `<div class="empty-cell">-</div>`;
-                        }
-                        tr.appendChild(td);
-                    });
-                    
+                    const td = document.createElement('td');
+                    td.colSpan = 9;
+                    td.className = 'category-row';
+                    td.textContent = row.title;
+                    tr.appendChild(td);
                     tbody.appendChild(tr);
-                });
-            });
+                    return;
+                }
 
-            document.getElementById('record-count').textContent = totalRecords;
+                const tr = document.createElement('tr');
+                
+                // Level Cell
+                const tdLevel = document.createElement('td');
+                tdLevel.className = 'rank-level';
+                tdLevel.textContent = row.level;
+                tr.appendChild(tdLevel);
+
+                // Branch Cells
+                const branches = ['navy', 'starfighter', 'navyIntel', 'army', 'specForces', 'armyIntel', 'nri', 'gov'];
+                const branchNames = [
+                    'New Republic Navy', 'Starfighter Command', 'Naval Intelligence', 
+                    'New Republic Army', 'Special Forces', 'Army Intelligence', 
+                    'Republic Intelligence (NRI)', 'Governance / Senate'
+                ];
+
+                branches.forEach((branch, index) => {
+                    const td = document.createElement('td');
+                    td.className = 'rank-cell';
+                    
+                    const cellData = row[branch];
+                    if (cellData) {
+                        td.innerHTML = `
+                            <div class="rank-cell-content">
+                                <div class="rank-title">${cellData.title}</div>
+                                ${generatePlaqueHTML(cellData.plaque)}
+                            </div>
+                        `;
+                        
+                        // Click event to open modal
+                        td.addEventListener('click', () => {
+                            openModal({
+                                level: row.level,
+                                branch: branchNames[index],
+                                title: cellData.title,
+                                plaqueHtml: generatePlaqueHTML(cellData.plaque),
+                                desc: cellData.desc
+                            });
+                        });
+                    } else {
+                        td.innerHTML = `<span style="color:#475569; font-size:0.8rem;">-- RESTRICTED --</span>`;
+                    }
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
         }
 
-        // ── Search & Filter ──────────────────────────────────────────────
-        const searchInput = document.getElementById('searchInput');
-
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.cell-card');
-            
-            cards.forEach(card => {
-                const title = card.dataset.title;
-                const branch = card.dataset.branch;
-                if (title.includes(term) || branch.includes(term)) {
-                    card.classList.remove('dimmed');
-                } else {
-                    card.classList.add('dimmed');
-                }
-            });
-        });
-
-        // ── Modal Logic ──────────────────────────────────────────────────
-        const modal = document.getElementById('rankModal');
-        const closeBtn = document.getElementById('closeModalBtn');
+        // ── Modal Logic ───────────────────────────────────────────────────
+        const modal = document.getElementById('rank-modal');
+        const closeBtn = document.getElementById('close-modal-btn');
 
         function openModal(data) {
-            document.getElementById('modalRankName').textContent = data.title;
-            document.getElementById('modalBranchCode').textContent = `${branchNames[data.branch]} | ${data.designation}`;
-            document.getElementById('modalBadge').innerHTML = buildPipsHTML(data.pipsStr);
-            document.getElementById('modalLoreText').textContent = data.lore;
+            document.getElementById('modal-title').textContent = data.title;
+            document.getElementById('modal-branch').textContent = data.branch;
+            document.getElementById('modal-code').textContent = data.level;
+            document.getElementById('modal-plaque').innerHTML = data.plaqueHtml;
+            
+            // Format lore paragraphs
+            const loreHtml = data.desc.split('\n').map(p => `<p>${p}</p>`).join('');
+            document.getElementById('modal-lore').innerHTML = loreHtml;
+            
             modal.classList.add('active');
         }
 
@@ -800,27 +902,23 @@
             if (e.key === 'Escape') closeModal();
         });
 
-        // ── Stardate / Clock Logic ───────────────────────────────────────
+        // ── Live Clock ────────────────────────────────────────────────────
         function updateClock() {
             const now = new Date();
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(now.getMinutes()).padStart(2, '0');
-            const ss = String(now.getSeconds()).padStart(2, '0');
+            const hh = String(now.getHours()).padStart(2,'0');
+            const mm = String(now.getMinutes()).padStart(2,'0');
+            const ss = String(now.getSeconds()).padStart(2,'0');
             
-            document.getElementById('clock-display').textContent = `${hh}:${mm}:${ss} Coruscant Standard`;
-
-            const baseDate = new Date('1983-05-25').getTime(); // ROTJ release ~ 4 ABY
-            const diffDays = (now.getTime() - baseDate) / (1000 * 3600 * 24);
-            const stardate = (4.0 + (diffDays / 365.25)).toFixed(2);
-            
-            document.getElementById('stardate-display').textContent = `SD: ${stardate} ABY`;
+            const clk = document.getElementById('clock-display');
+            if (clk) clk.textContent = `${hh}:${mm}:${ss}`;
         }
-        
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ── Init ─────────────────────────────────────────────────────────
-        renderTable();
+        // ── Initialization ────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable();
+        });
 
     </script>
 </body>
